@@ -10,34 +10,42 @@
         </el-row>
         <el-button size="medium" circle><i class="el-icon-camera-solid"/></el-button>
         <!-- 标签 -->
-        <div class="loginLabel">未登录</div>
+        <div class="loginLabel"><label class="name">未登录</label></div>
       </div>
       <div class="second">
-        <label>留言功能</label>
-        <el-switch
-          class="switch"
-          v-model="value1"
-          active-text="打开"
-          inactive-text="关闭"
-          inactive-color="#c0c4cc"
-          size="large"
-        />
-      </div>
+        <label class="line-label">留言功能</label>
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+          <input type="radio" class="btn-check" name="switch" id="switch1" autocomplete="off" checked>
+          <label class="btn btn-outline-primary" for="switch1"><span class="fontspan">开</span></label>
 
-      <div class="second">
-        <label>进入信箱</label>
+          <input type="radio" class="btn-check" name="switch" id="switch2" autocomplete="off">
+          <label class="btn btn-outline-primary" for="switch2"><span class="fontspan">关</span></label>
+        </div>
+      </div>
+      <div class="second hovergrey">
+        <label class="line-label">进入信箱</label>
         <i class="el-icon-arrow-right"/>
       </div>
       <div class="second">
-        <label>更换语言</label>
+        <label class="line-label">更换语言</label>
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+          <input type="radio" class="btn-check" name="lang" id="lang1" autocomplete="off" checked>
+          <label class="btn btn-outline-primary" for="lang1"><span class="fontspan">中</span></label>
+
+          <input type="radio" class="btn-check" name="lang" id="lang2" autocomplete="off">
+          <label class="btn btn-outline-primary" for="lang2"><span class="fontspan">英</span></label>
+        </div>
       </div>
-      <div class="second">
-        <label>最近删除</label>
+      <div class="second hovergrey">
+        <label class="line-label">最近删除</label>
         <span class="deleteValue">3</span>
         <i class="el-icon-arrow-right"/>
       </div>
       <div class="second">
-
+        <button class="quit">
+          <img class="quiticon" src="../assets/icon/quit.svg" alt="">&nbsp;
+          <span>退出</span>
+        </button>
       </div>
     </div>
   </div>
@@ -74,10 +82,8 @@
   .main{
     width: 314px;
     height: 600px;
-    background-color: #8b3939;
     border-radius: 2px; /* 设置圆角边框 */
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
-    padding: 20px;
   }
   /* 头像容器样式 */
   .login {
@@ -107,17 +113,16 @@
     background: #ffffff;
     border-top: 1px solid #000;
   }
-  .second label{
+  .line-label{
     position: relative;
     left: 45px;
     top: 22px;
     color:#606266;
     font-size: 18px;
   }
-  .el-switch{
-    position: relative;
-    left: 150px;
-    top: 20px;
+  .hovergrey:hover{
+    color:#606266;
+    background-color: #e8e8e8;
   }
   .el-icon-arrow-right{
     position: relative;
@@ -132,35 +137,38 @@
     color:#606266;
     font-size: 16px;
   }
-  .el-switch__label * {
-    line-height: 1;
-    font-size: 12px;
-    display: inline-block;
+  .btn-group{
+    position: relative;
+    left: 130px;
+    top: 19px;
+    width: 22px;
+    height: 28px;
   }
- .el-switch__label {
-    position: absolute;
-    display: none;
-    color: #fff !important;
-    font-size: 12px !important;
+  .fontspan{
+    position: relative;
+    left: 0px;
+    top: -4px;
   }
-  /*打开时文字位置设置*/
-  .el-switch__label--right {
-    z-index: 1;
-    left: -3px;
+  .quiticon{
+    width: 22px;
+    height: 22px;
   }
-  /*关闭时文字位置设置*/
-  .el-switch__label--left {
-    z-index: 1;
-    left: 20px;
+  .quit{
+    position: relative;
+    left: 215px;
+    top: 22px;
+    border: none;
+    background-color:white;
+    color:#969aa1;
+    font-size: 16px;
   }
-  /*显示文字*/
-  .el-switch__label.is-active {
-    display: block;
+  .quit:hover{
+    color:#606266;
   }
-   /*开关宽度*/
-  .el-switch .el-switch__core,
-  .el-switch .el-switch__label {
-    width: 52px !important;
+  .el-icon-camera-solid:hover{
+    color: #0d6efd;
   }
-
+  .name:hover{
+    color: #0d6efd;
+  }
 </style>
