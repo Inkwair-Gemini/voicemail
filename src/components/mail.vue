@@ -8,9 +8,9 @@
       </div>
       <el-table
         :data="
-          deleteList.filter(
+          senderList.filter(
             (data) =>
-              !search || data.title.toLowerCase().includes(search.toLowerCase())
+              !search || data.sender.toLowerCase().includes(search.toLowerCase())
           )
         "
         style="width: 100%"
@@ -71,21 +71,21 @@ export default {
   data() {
     return {
       title: "最近删除",
-      deleteList: [
+      senderList: [
         {
           id: 1,
           progress: "50",
-          sender: "张三",
+          sender: "Zhang",
         },
         {
           id: 2,
           progress: "0",
-          sender: "李四",
+          sender: "Li",
         },
         {
           id: 3,
           progress: "0",
-          sender: "王五",
+          sender: "Wang",
         },
       ],
       tableHeaderAlign: "right",
@@ -94,7 +94,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.deleteList.forEach((row, index) => {
+      this.senderList.forEach((row, index) => {
         this.renderWaveChart(
           `waveCanvas_${index}` /* 传递数据给图表，例如 row 中的音频数据 */
         );
