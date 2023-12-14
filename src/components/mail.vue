@@ -10,7 +10,8 @@
         :data="
           senderList.filter(
             (data) =>
-              !search || data.sender.toLowerCase().includes(search.toLowerCase())
+              !search ||
+              data.sender.toLowerCase().includes(search.toLowerCase())
           )
         "
         style="width: 100%"
@@ -29,6 +30,7 @@
                 v-model="scope.row.progress"
                 :show-input="false"
                 :show-tooltip="false"
+                :max="100"
               ></el-slider>
             </div>
           </template>
@@ -54,6 +56,7 @@
           </template>
         </el-table-column>
       </el-table>
+      <audio ref="audio"></audio>
     </div>
   </div>
 </template>
@@ -61,9 +64,9 @@
 <script>
 import Chart from "chart.js";
 
-import Vue from 'vue';
-import { DatePicker } from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
+import Vue from "vue";
+import { DatePicker } from "ant-design-vue";
+import "ant-design-vue/dist/antd.css";
 Vue.use(DatePicker);
 
 export default {
@@ -76,16 +79,19 @@ export default {
           id: 1,
           progress: "50",
           sender: "Zhang",
+          musicUrl: require("@/assets/music/test.mp3"),
         },
         {
           id: 2,
           progress: "0",
           sender: "Li",
+          musicUrl: require("@/assets/music/test.mp3"),
         },
         {
           id: 3,
           progress: "0",
           sender: "Wang",
+          musicUrl: require("@/assets/music/test.mp3"),
         },
       ],
       tableHeaderAlign: "right",
@@ -128,8 +134,27 @@ export default {
       });
     },
     handlePlay(index, rowData) {
-      console.log(`点击播放按钮，播放第 ${index} 行的数据: `, rowData);
-      // 执行播放操作...
+      console.log(`正在播放第 ${index} 行的数据: `);
+      let audio = new Audio();
+      audio = rowData.musicUrl;
+      this.$refs.audio.src = audio;
+      this.$nextTick(() => {
+        const { audio } = this.$refs;
+        audio.load();
+        audio.play();
+      });
+      // audio.addEventListener("canplay", () => {
+      //   audio.play();
+
+      //   // 监听音频播放进度变化事件
+      //   audio.addEventListener("timeupdate", () => {
+      //     // 计算进度百分比
+      //     const progress = (audio.currentTime / audio.duration) * 100;
+
+      //     // 更新数据对象中的进度
+      //     this.$set(rowData, "progress", progress);
+      //   });
+      // });
     },
   },
 };
@@ -167,7 +192,7 @@ export default {
   position: relative;
   left: -25px;
   width: 57px;
-  height:28px;
+  height: 28px;
 }
 .play .anticon {
   position: absolute;
