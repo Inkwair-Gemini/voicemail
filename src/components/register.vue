@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 
     export default {
         name:"Register",
@@ -39,7 +40,26 @@
             close(){
                 this.dialogVisible = false;
             },
+            userIsExits(username){
+              axios.get(`http://localhost:8080/user/selectUserByUsername?username=${username}`).then(()=>{
+                Response=>{
+                  return Response.data
+                },
+                error=>{console.log(error.message)}
+              })
+            },
             submit(){
+                if(this.userIsExits(this.registerUser.username)){
+                  alert("用户名已存在！")
+                }else if(this.registerUser.password!==this.registerUser.repassword){
+                  alert("两次输入的密码不一致！")
+                }else{
+                  axios.post(`http://localhost:8080/user/addUser`,JSON.stringify(this.registerUser)).then(()=>{
+                    Response=>{console.log(Response.data)},
+                    error=>{console.log(error.message)}
+                  })
+                  alert("注册成功！")
+                }
                 this.dialogVisible = false;
             }
         },
