@@ -1,18 +1,18 @@
 <template>
   <div class="loginLabel">
     <label class="loginName" @click="login">未登录</label>
-    <el-dialog :visible.sync="dialogVisible" width="30%" :before-close="handleClose" @close="close">
+    <el-dialog :visible="dialogVisible" width="30%"  @close="close">
         <!-- 自定义title -->
         <div slot="title" class="header-title">
             <span>登陆</span>
         </div>
-        <el-form v-model="user" label-width="80px">
+        <el-form v-model="loginUser" label-width="80px">
             <label>用户名&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <el-input class="input" v-model="user.username" size="small" placeholder="请输入用户名" autofocus></el-input><br><br>
+            <el-input class="input" v-model="loginUser.username" size="small" placeholder="请输入用户名" autofocus></el-input><br><br>
             <label>&nbsp;&nbsp;&nbsp;密码&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <el-input class="input" v-model="user.password" size="small" placeholder="请输入密码" show-password></el-input>
+            <el-input class="input" v-model="loginUser.password" size="small" placeholder="请输入密码" show-password></el-input>
         </el-form>
-        <label class="register">没有注册?</label>
+        <label class="registerName" @click="register">没有账号?</label>
         <br>
         <span slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -23,28 +23,35 @@
 </template>
 
 <script>
-export default {
-    data() {
-      return {
-        dialogVisible: false,
-        user:{
-            username:'',
-            password:'',
-        }
-      };
-    },
-    methods: {
-        close(){
-            this.dialogVisible = false;
+
+    export default {
+        name:"Login",
+        components:{},
+        data() {
+            return {
+                dialogVisible: false,
+                loginUser:{
+                    username:'',
+                    password:'',
+                }
+            };
         },
-        login(){
-            this.dialogVisible = true;
+        methods: {
+            close(){
+                this.dialogVisible = false;
+            },
+            login(){
+                this.dialogVisible = true;
+            },
+            submit(){
+                this.dialogVisible = false;
+            },
+            register(){
+                this.dialogVisible = false;
+                this.$bus.$emit("registerVisible")
+            }
         },
-        submit(){
-            this.dialogVisible = false;
-        }
     }
-}
 </script>
 
 <style scoped>
@@ -52,8 +59,14 @@ export default {
     position: relative;
     top:-13px;
   }
-  .loginName:hover{
+  .loginName:hover,.registerName:hover{
     color: #0d6efd;
+    cursor: pointer
+  }
+  .registerName{
+    position: relative;
+    top:5px;
+    left: 95px;
   }
   .header-title {
     position: relative;
@@ -67,6 +80,6 @@ export default {
   }
   .dialog-footer{
     position: relative;
-    left: -150px;
+    left: -110px;
   }
 </style>

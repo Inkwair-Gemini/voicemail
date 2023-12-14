@@ -11,6 +11,7 @@
         <el-button size="medium" circle><i class="el-icon-camera-solid"/></el-button>
         <!-- 标签 -->
         <Login/>
+        <Register/>
       </div>
       <div class="second">
         <label class="line-label">留言功能</label>
@@ -54,9 +55,10 @@
 <script>
   import {ref} from 'vue'
   import Login from './Login.vue';
+  import Register from './Register.vue';
   export default {
     name:"Menu",
-    components:{Login},
+    components:{Login,Register},
     data() {
       return {
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -69,7 +71,7 @@
       changeAvatar() {
         // 处理更换头像的逻辑
       },
-    },
+    }
   }
 </script>
 
@@ -121,6 +123,7 @@
   .hovergrey:hover{
     color:#606266;
     background-color: #e8e8e8;
+    cursor: pointer;
   }
   .el-icon-arrow-right{
     position: relative;
