@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import Delete from "./components/Delete";
+  import Delete from "./components/mail";
     export default {
       name: 'App',
       components: {Delete},
