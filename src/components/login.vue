@@ -20,14 +20,13 @@
 </template>
 
 <script>
-
+import axios from 'axios';
     export default {
         name:"Login",
         components:{},
         data() {
             return {
                 dialogVisible: false,
-                username:"",
                 loginUser:{
                     username:'',
                     password:'',
@@ -42,7 +41,26 @@
                 this.dialogVisible = true;
             },
             submit(){
-                this.dialogVisible = false;
+                // axios.post('http://localhost:8080/user/loginUser',JSON.stringify(this.loginUser)).then(
+                //     response=>{
+                //         // const result=response.data
+                        const result={
+                            success:true,
+                            user:{
+                                id:12,
+                                username:'ok',
+                                avatarUrl:"https://ts1.cn.mm.bing.net/th/id/R-C.4b50dad811534dc8169ea45db550a87d?rik=PFKIeJF5U1uEYQ&riu=http%3a%2f%2fsociety.yunnan.cn%2fpic%2f003%2f037%2f094%2f00303709457_f1380d4c.jpg&ehk=0vwsmM0G2yWl8CrWnr7wFtjDApWZJlHYTPOkEmjj%2fD4%3d&risl=&pid=ImgRaw&r=0"
+                            }
+                        }
+                        if(result.success===true){
+                            this.$bus.$emit("getUser",result.user)
+                            this.dialogVisible = false;
+                        }else{
+                            alert('用户名或密码错误！')
+                        }
+                //     },
+                //     error=>{console.log(error.message)}
+                // )
             },
             register(){
                 this.dialogVisible = false;

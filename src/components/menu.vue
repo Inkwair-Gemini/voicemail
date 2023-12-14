@@ -124,10 +124,16 @@
           this.user.username="未登录"
           this.user.avatarUrl="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
           localStorage.removeItem('user')
+          this.isLogin=false
+          this.$forceUpdate();
       },
       uploadAvatar(){
-        this.avatarform.url=''
-        this.avatarVisible=true
+        if(this.isLogin){
+          this.avatarform.url=''
+          this.avatarVisible=true
+        }else{
+          alert("未登录,请先登录")
+        }
       },
       avatarSubmit(){
         this.user.avatarUrl=this.avatarform.url
@@ -136,15 +142,20 @@
           response=>{
               console.log(response.data)
           },
-          error=>{
-              console.log(error.message)
-          }
+          error=>{console.log(error.message)}
         )
         this.avatarVisible=false
         this.$forceUpdate();
       }
     },
     mounted(){
+      this.$bus.$on('getUser',(loginUser)=>{
+        localStorage.setItem('user',JSON.stringify(loginUser))
+        this.isLogin=true
+        this.user.id=loginUser.id
+        this.user.username=loginUser.username
+        this.user.avatarUrl=loginUser.avatarUrl
+      })
       const loginUser=JSON.parse(localStorage.getItem('user'))
       if(loginUser){
         this.isLogin=true
@@ -279,7 +290,7 @@
   }
   .header-title {
     position: relative;
-    left:-150px;
+    left:-320px;
     font-size: 18px;
     line-height: 24px;
     color: #b4bac3;
