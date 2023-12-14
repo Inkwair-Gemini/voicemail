@@ -54,8 +54,8 @@
 
 <script>
   import {ref} from 'vue'
-  import Login from './Login.vue';
-  import Register from './Register.vue';
+  import Login from './login.vue';
+  import Register from './register.vue';
   export default {
     name:"Menu",
     components:{Login,Register},
