@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <Delete></Delete>
+    <Menu></Menu>
   </div>
 </template>
 
 <script>
-  import Delete from "./components/Delete";
+  import Menu from "./components/Menu";
     export default {
       name: 'App',
-      components: {Delete},
+      components: {Menu},
 
     }
 </script>

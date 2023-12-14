@@ -10,7 +10,7 @@
         </el-row>
         <el-button size="medium" circle><i class="el-icon-camera-solid"/></el-button>
         <!-- 标签 -->
-        <div class="loginLabel"><label class="name">未登录</label></div>
+        <Login/>
       </div>
       <div class="second">
         <label class="line-label">留言功能</label>
@@ -53,8 +53,10 @@
 
 <script>
   import {ref} from 'vue'
+  import Login from './Login.vue';
   export default {
     name:"Menu",
+    components:{Login},
     data() {
       return {
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -102,10 +104,6 @@
   }
   .el-icon-camera-solid {
     font-size: 20px;
-  }
-  .loginLabel {
-    position: relative;
-    top:-13px;
   }
   .second{
     width: 314px;
@@ -166,9 +164,6 @@
     color:#606266;
   }
   .el-icon-camera-solid:hover{
-    color: #0d6efd;
-  }
-  .name:hover{
     color: #0d6efd;
   }
 </style>
