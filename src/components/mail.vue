@@ -31,6 +31,7 @@
                 :show-input="false"
                 :show-tooltip="false"
                 :max="100"
+                @change="handleSliderChange"
               ></el-slider>
             </div>
           </template>
@@ -96,6 +97,8 @@ export default {
       ],
       tableHeaderAlign: "right",
       search: "",
+      currentAudio: null,
+      currentAudioPosition: 0,
     };
   },
   mounted() {
@@ -118,7 +121,6 @@ export default {
       new Chart(ctx, {
         type: "line",
         data: {
-          //   labels:
           datasets: [
             {
               label: "音波图",
@@ -133,28 +135,62 @@ export default {
         },
       });
     },
+
     handlePlay(index, rowData) {
       console.log(`正在播放第 ${index} 行的数据: `);
-      let audio = new Audio();
-      audio = rowData.musicUrl;
-      this.$refs.audio.src = audio;
-      this.$nextTick(() => {
-        const { audio } = this.$refs;
-        audio.load();
-        audio.play();
-      });
-      // audio.addEventListener("canplay", () => {
-      //   audio.play();
 
-      //   // 监听音频播放进度变化事件
-      //   audio.addEventListener("timeupdate", () => {
-      //     // 计算进度百分比
-      //     const progress = (audio.currentTime / audio.duration) * 100;
+      if (this.currentAudio) {
+        if (this.currentAudio.paused) {
+          // 如果音频已经暂停，从存储的位置继续播放
+          this.currentAudio.currentTime = this.currentAudioPosition;
+          this.currentAudio.play();
+        } else {
+          // 如果音频正在播放，暂停它并存储当前播放位置
+          this.currentAudio.pause();
+          this.currentAudioPosition = this.currentAudio.currentTime;
+        }
+        let progress =
+          (this.currentAudio.currentTime / this.currentAudio.duration) * 100;
+        console.log(progress);
+        if (progress == 100) {
+          this.currentAudio.currentTime = 0;
+        }
+      } else {
+        // 否则，创建新的音频对象并播放
+        const audio = new Audio(rowData.musicUrl);
 
-      //     // 更新数据对象中的进度
-      //     this.$set(rowData, "progress", progress);
-      //   });
-      // });
+        audio.addEventListener("canplay", () => {
+          this.$refs.audio.src = rowData.musicUrl;
+          audio.play();
+
+          // 监听音频播放进度变化事件
+          audio.addEventListener("timeupdate", () => {
+            // 计算进度百分比
+            const progress = (audio.currentTime / audio.duration) * 100;
+            console.log(progress);
+            // 更新数据对象中的进度
+            this.$set(rowData, "progress", progress);
+          });
+          // 将当前音频对象保存到数据中
+          this.currentAudio = audio;
+        });
+      }
+    },
+
+    isPlaying(rowData) {
+      // 检查是否当前音频正在播放
+      return (
+        this.currentAudio &&
+        this.currentAudio.src === rowData.musicUrl &&
+        !this.currentAudio.paused
+      );
+    },
+
+    handleSliderChange(value) {
+      if (this.currentAudio) {
+        this.currentAudio.currentTime =
+          (value / 100) * this.currentAudio.duration;
+      }
     },
   },
 };
