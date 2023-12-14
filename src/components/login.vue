@@ -12,6 +12,7 @@
             <label>&nbsp;&nbsp;&nbsp;密码&nbsp;&nbsp;&nbsp;&nbsp;</label>
             <el-input class="input" v-model="user.password" size="small" placeholder="请输入密码" show-password></el-input>
         </el-form>
+        <label class="register">没有注册?</label>
         <br>
         <span slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -46,7 +47,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .loginLabel {
     position: relative;
     top:-13px;
