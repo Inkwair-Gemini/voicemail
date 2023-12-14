@@ -27,7 +27,7 @@
         name:"Register",
         data() {
             return {
-                dialogVisible: true,
+                dialogVisible: false,
                 registerUser:{
                     username:'',
                     password:'',

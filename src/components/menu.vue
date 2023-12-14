@@ -43,7 +43,7 @@
         <i class="el-icon-arrow-right"/>
       </div>
       <div class="second">
-        <button class="quit">
+        <button class="quit" @click="quit">
           <img class="quiticon" src="../assets/icon/quit.svg" alt="">&nbsp;
           <span>退出</span>
         </button>
@@ -71,6 +71,16 @@
       changeAvatar() {
         // 处理更换头像的逻辑
       },
+      quit(){
+        this.$confirm('确定退出程序?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          window.close()
+        }).catch(() => {         
+        });
+      }
     }
   }
 </script>
