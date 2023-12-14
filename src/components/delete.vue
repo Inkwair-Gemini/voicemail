@@ -84,52 +84,52 @@ export default {
 };
 </script>
 
-<style>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* 使容器铺满整个视口高度 */
-  color: #b4bac3;
-}
-.main {
-  width: 500px;
-  height: 700px;
-  border-radius: 2px; /* 设置圆角边框 */
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
-}
-.header {
-  width: 500px;
-  height: 60px;
-}
-.header2 {
-  position: relative;
-  top: 7px;
-  left: 13px;
-}
-.search {
-  position: relative;
-  left: -16px;
-  width: 110px;
-}
-.recover {
-  position: relative;
-  left: -25px;
-  width: 57px;
-}
-.el-icon-refresh-left {
-  font-size: 16px;
-}
-.el-icon-search {
-  position: relative;
-  left: -10px;
-}
-.content {
-  position: relative;
-  right: -40px;
-  width: 400px;
-  display: inline-block;
-  word-break: break-all;
-  white-space: normal;
-}
+<style scoped>
+  .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 使容器铺满整个视口高度 */
+    color: #b4bac3;
+  }
+  .main{
+    width: 500px;
+    height: 700px;
+    border-radius: 2px; /* 设置圆角边框 */
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
+  }
+  .header{
+    width: 500px;
+    height: 60px;
+  }
+  .header2{
+    position: relative;
+    top: 7px;
+    left: 13px;
+  }
+  .search{
+    position: relative;
+    left: -16px;
+    width: 110px;
+  }
+  .recover{
+    position: relative;
+    left: -25px;
+    width: 57px;
+  }
+  .el-icon-refresh-left{
+    font-size: 16px;
+  }
+  .el-icon-search{
+    position: relative;
+    left: -10px;
+  }
+  .content{
+    position: relative;
+    right:-40px;
+    width: 400px;
+    display: inline-block;
+    word-break: break-all;
+    white-space: normal;
+  }
 </style>

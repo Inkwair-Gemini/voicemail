@@ -10,7 +10,8 @@
         </el-row>
         <el-button size="medium" circle><i class="el-icon-camera-solid"/></el-button>
         <!-- 标签 -->
-        <div class="loginLabel"><label class="name">未登录</label></div>
+        <Login/>
+        <Register/>
       </div>
       <div class="second">
         <label class="line-label">留言功能</label>
@@ -53,8 +54,11 @@
 
 <script>
   import {ref} from 'vue'
+  import Login from './Login.vue';
+  import Register from './Register.vue';
   export default {
     name:"Menu",
+    components:{Login,Register},
     data() {
       return {
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -67,11 +71,11 @@
       changeAvatar() {
         // 处理更换头像的逻辑
       },
-    },
+    }
   }
 </script>
 
-<style>
+<style scoped>
   .container{
     display: flex;
     justify-content: center;
@@ -103,10 +107,6 @@
   .el-icon-camera-solid {
     font-size: 20px;
   }
-  .loginLabel {
-    position: relative;
-    top:-13px;
-  }
   .second{
     width: 314px;
     height: 70px;
@@ -123,6 +123,7 @@
   .hovergrey:hover{
     color:#606266;
     background-color: #e8e8e8;
+    cursor: pointer;
   }
   .el-icon-arrow-right{
     position: relative;
@@ -166,9 +167,6 @@
     color:#606266;
   }
   .el-icon-camera-solid:hover{
-    color: #0d6efd;
-  }
-  .name:hover{
     color: #0d6efd;
   }
 </style>
