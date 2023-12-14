@@ -68,7 +68,7 @@
       </div>
       <div class="second hovergrey">
         <label class="line-label">最近删除</label>
-        <span class="deleteValue">3</span>
+        <span class="deleteValue">{{ deleteNumber }}</span>
         <i class="el-icon-arrow-right"/>
       </div>
       <div class="second">
@@ -98,6 +98,7 @@
         isLogin:false,
         avatarform:{url:''},
         formLabelWidth: '70px',
+        deleteNumber:0,
         user:{
           id:'',
           username:"",
@@ -125,6 +126,7 @@
           this.user.avatarUrl="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
           localStorage.removeItem('user')
           this.isLogin=false
+          this.deleteNumber=''
           this.$forceUpdate();
       },
       uploadAvatar(){
@@ -146,6 +148,15 @@
         )
         this.avatarVisible=false
         this.$forceUpdate();
+      },
+      getDeleteNum(username){
+        //   axios.get(`http://localhost:8080/delete/getListByUsername?username=${username}`).then(()=>{
+        //     Response=>{
+        //       return Response.data.deleteList.length
+        //     },
+        //     error=>{console.log(error.message)}
+        //   })
+        return 3
       }
     },
     mounted(){
@@ -155,6 +166,7 @@
         this.user.id=loginUser.id
         this.user.username=loginUser.username
         this.user.avatarUrl=loginUser.avatarUrl
+        this.deleteNumber=loginUser.deleteListNumber
       })
       const loginUser=JSON.parse(localStorage.getItem('user'))
       if(loginUser){
@@ -162,9 +174,11 @@
         this.user.id=loginUser.id
         this.user.username=loginUser.username
         this.user.avatarUrl=loginUser.avatarUrl
+        this.deleteNumber=this.getDeleteNum(loginUser.username)
       }else{
         this.user.username="未登录"
         this.user.avatarUrl="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+        this.deleteNumber=''
       }
     }
   }
