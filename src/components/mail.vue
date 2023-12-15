@@ -65,7 +65,7 @@
 
 <script>
 import Chart from "chart.js";
-
+import axios from "axios";
 import Vue from "vue";
 import { DatePicker } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
@@ -105,6 +105,24 @@ export default {
     };
   },
   methods: {
+    async fetchMusicData() {
+      try {
+        const response = await axios.get("URL of the backend API"); //这里写后端的API
+        if (response.status === 200) {
+          const musicData = response.data;
+          this.senderList.forEach((item) => {
+            const musicUrl = musicData[item.id];
+            if (musicUrl) {
+              item.musicUrl = musicUrl;
+            }
+          });
+        } else {
+          console.error("Request failed:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Network request error:", error);
+      }
+    },
     renderWaveChart(canvasId, audioData) {
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
