@@ -8,7 +8,7 @@
       </div>
       <el-table
         :data="
-          senderList.filter(
+          mailList.filter(
             (data) =>
               !search ||
               data.sender.toLowerCase().includes(search.toLowerCase())
@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       title: "最近删除",
-      senderList: [
+      mailList: [
         {
           id: 1,
           progress: "50",
@@ -104,13 +104,17 @@ export default {
       currentRowData: null,
     };
   },
+  mounted() {
+    this.fetchDataFromBackend();
+  },
+
   methods: {
     async fetchDataFromBackend() {
       try {
         const response = await axios.get("localhost:8080/");
-        const backendSenderList = response.data;
+        const backendMailList = response.data;
 
-        this.senderList = backendSenderList;
+        this.mailList = backendMailList;
       } catch (error) {
         console.error("Data Acquisition Failure:", error);
       }
