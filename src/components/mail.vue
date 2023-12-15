@@ -76,26 +76,26 @@ export default {
   data() {
     return {
       title: "最近删除",
-      mailList: [
-        {
-          id: 1,
-          progress: "50",
-          sender: "Zhang",
-          musicUrl: require("@/assets/music/test.mp3"),
-        },
-        {
-          id: 2,
-          progress: "0",
-          sender: "Li",
-          musicUrl: require("@/assets/music/test.mp3"),
-        },
-        {
-          id: 3,
-          progress: "0",
-          sender: "Wang",
-          musicUrl: require("@/assets/music/test.mp3"),
-        },
-      ],
+      // mailList: [
+      //   {
+      //     id: 1,
+      //     progress: "50",
+      //     sender: "Zhang",
+      //     musicUrl: require("@/assets/music/test.mp3"),
+      //   },
+      //   {
+      //     id: 2,
+      //     progress: "0",
+      //     sender: "Li",
+      //     musicUrl: require("@/assets/music/test.mp3"),
+      //   },
+      //   {
+      //     id: 3,
+      //     progress: "0",
+      //     sender: "Wang",
+      //     musicUrl: require("@/assets/music/test.mp3"),
+      //   },
+      // ],
       tableHeaderAlign: "right",
       search: "",
       currentAudio: null,
