@@ -99,6 +99,10 @@ export default {
       search: "",
       currentAudio: null,
       currentAudioPosition: 0,
+      currentIndex: null,
+      currentRowData: null,
+      currentCanplayHandler: null,
+      currentTimeupdateHandler: null,
     };
   },
   mounted() {
@@ -139,7 +143,7 @@ export default {
     handlePlay(index, rowData) {
       console.log(`正在播放第 ${index} 行的数据: `);
 
-      if (this.currentAudio) {
+      if (this.currentAudio && this.currentIndex == index) {
         if (this.currentAudio.paused) {
           // 如果音频已经暂停，从存储的位置继续播放
           this.currentAudio.currentTime = this.currentAudioPosition;
@@ -155,10 +159,20 @@ export default {
         if (progress == 100) {
           this.currentAudio.currentTime = 0;
         }
-      } else {
-        // 否则，创建新的音频对象并播放
+      } else if (this.currentAudio) {
+        if (!this.currentAudio.paused) {
+          this.currentAudio.pause();
+          console.log("now it is paused.");
+        } else {
+          console.log("it's already paused.");
+        }
+        let previousRowData = this.currentRowData;
+        this.currentIndex = index;
+        this.currentRowData = rowData;
+        this.currentAudio = null;
         const audio = new Audio(rowData.musicUrl);
 
+        // audio.addEventListener("canplay", () => {
         audio.addEventListener("canplay", () => {
           this.$refs.audio.src = rowData.musicUrl;
           audio.play();
@@ -169,13 +183,38 @@ export default {
             let progress = (audio.currentTime / audio.duration) * 100;
             console.log(progress);
             // 更新数据对象中的进度
-            if (progress == 100){
+            if (progress == 100) {
+              progress = 0;
+            }
+            this.$set(rowData, "progress", progress);
+          });
+          // 将当前音频对象保存到数据中
+          this.$set(previousRowData, "progress", 0);
+          this.currentAudio = audio;
+        });
+      } else {
+        // 否则，创建新的音频对象并播放
+        const audio = new Audio(rowData.musicUrl);
+        console.log("1111111");
+        audio.addEventListener("canplay", () => {
+          this.$refs.audio.src = rowData.musicUrl;
+          audio.play();
+          console.log("1111111");
+          // 监听音频播放进度变化事件
+          audio.addEventListener("timeupdate", () => {
+            // 计算进度百分比
+            let progress = (audio.currentTime / audio.duration) * 100;
+            console.log(progress);
+            // 更新数据对象中的进度
+            if (progress == 100) {
               progress = 0;
             }
             this.$set(rowData, "progress", progress);
           });
           // 将当前音频对象保存到数据中
           this.currentAudio = audio;
+          this.currentRowData = rowData;
+          this.currentIndex = index;
         });
       }
     },
