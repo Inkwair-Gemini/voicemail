@@ -16,9 +16,9 @@
         "
         style="width: 100%"
       >
-        <el-table-column type="expand">
-          <audio ref="audio"></audio>
-        </el-table-column>
+        <audio ref="audio" style="width: 100px"></audio>
+
+        <el-table-column :min-width="10"></el-table-column>
         <el-table-column
           label="发件人"
           prop="sender"
