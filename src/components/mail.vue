@@ -16,7 +16,9 @@
         "
         style="width: 100%"
       >
-        <el-table-column type="expand"> </el-table-column>
+        <el-table-column type="expand">
+          <audio ref="audio"></audio>
+        </el-table-column>
         <el-table-column
           label="发件人"
           prop="sender"
@@ -57,7 +59,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <audio ref="audio"></audio>
     </div>
   </div>
 </template>
@@ -101,18 +102,7 @@ export default {
       currentAudioPosition: 0,
       currentIndex: null,
       currentRowData: null,
-      currentCanplayHandler: null,
-      currentTimeupdateHandler: null,
     };
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.senderList.forEach((row, index) => {
-        this.renderWaveChart(
-          `waveCanvas_${index}` /* 传递数据给图表，例如 row 中的音频数据 */
-        );
-      });
-    });
   },
   methods: {
     renderWaveChart(canvasId, audioData) {
