@@ -166,9 +166,12 @@ export default {
           // 监听音频播放进度变化事件
           audio.addEventListener("timeupdate", () => {
             // 计算进度百分比
-            const progress = (audio.currentTime / audio.duration) * 100;
+            let progress = (audio.currentTime / audio.duration) * 100;
             console.log(progress);
             // 更新数据对象中的进度
+            if (progress == 100){
+              progress = 0;
+            }
             this.$set(rowData, "progress", progress);
           });
           // 将当前音频对象保存到数据中
