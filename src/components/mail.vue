@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import Chart from "chart.js";
+// import Chart from "chart.js";
 import axios from "axios";
 import Vue from "vue";
 import { DatePicker } from "ant-design-vue";
@@ -105,48 +105,40 @@ export default {
     };
   },
   methods: {
-    async fetchMusicData() {
+    async fetchDataFromBackend() {
       try {
-        const response = await axios.get("URL of the backend API"); //这里写后端的API
-        if (response.status === 200) {
-          const musicData = response.data;
-          this.senderList.forEach((item) => {
-            const musicUrl = musicData[item.id];
-            if (musicUrl) {
-              item.musicUrl = musicUrl;
-            }
-          });
-        } else {
-          console.error("Request failed:", response.statusText);
-        }
+        const response = await axios.get("localhost:8080/");
+        const backendSenderList = response.data;
+
+        this.senderList = backendSenderList;
       } catch (error) {
-        console.error("Network request error:", error);
+        console.error("Data Acquisition Failure:", error);
       }
     },
-    renderWaveChart(canvasId, audioData) {
-      const canvas = document.getElementById(canvasId);
-      if (!canvas) return;
+    // renderWaveChart(canvasId, audioData) {
+    //   const canvas = document.getElementById(canvasId);
+    //   if (!canvas) return;
 
-      const ctx = canvas.getContext("2d");
+    //   const ctx = canvas.getContext("2d");
 
-      //创建音波图表
-      new Chart(ctx, {
-        type: "line",
-        data: {
-          datasets: [
-            {
-              label: "音波图",
-              borderColor: "blue",
-              borderWidth: 2,
-              data: audioData,
-            },
-          ],
-        },
-        options: {
-          // 配置图表样式和其他选项
-        },
-      });
-    },
+    //   //创建音波图表
+    //   new Chart(ctx, {
+    //     type: "line",
+    //     data: {
+    //       datasets: [
+    //         {
+    //           label: "音波图",
+    //           borderColor: "blue",
+    //           borderWidth: 2,
+    //           data: audioData,
+    //         },
+    //       ],
+    //     },
+    //     options: {
+    //       // 配置图表样式和其他选项
+    //     },
+    //   });
+    // },
 
     handlePlay(index, rowData) {
       console.log(`正在播放第 ${index} 行的数据: `);
