@@ -28,7 +28,8 @@
             <a-icon type="backward" />
           </el-button>
           <el-button class="play custom-large-button" @click="handlePlay()">
-            <a-icon type="caret-right" />
+            <!-- <a-icon type="caret-right" /> -->
+            <a-icon :type="isPlaying ? 'pause' : 'caret-right'" />
           </el-button>
           <el-button class="play custom-large-button" @click="fastForward()">
             <a-icon type="forward" />
@@ -36,8 +37,11 @@
         </div>
         <hr class="divider" />
       </template>
-      <!-- <el-input class="input" :rows="10" v-model="text"></el-input> -->
-      <div class="text">{{ text }}</div>
+      <template>
+        <div class="text">
+          {{ displayedText }}
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -53,19 +57,22 @@ export default {
   data() {
     return {
       title: "温家宝谈政治体制改革",
-      text: "而且，要进行政治体制改革，特别是党和国家领导制度的改革。现在，改革到了攻坚阶段。没有政治体制改革的成功，经济体制改革不可能进行到底。已经取得的成果还有可能得而复失，社会上新产生的问题也不能从根本上得到解决。文化大革命，这样历史的悲剧，还有可能重新发生。",
+      text: " 而且，要进行政治体制改革，特别是党和国家领导制度的改革。现在，改革到了攻坚阶段。没有政治体制改革的成功，经济\
+      体制改革不可能进行到底。已经取得的成果还有可能得而复失，社会上新产生的问题也不能从根本上得到解决。文化大革命，这样历史\
+      的悲剧，还有可能重新发生。",
       progress: 0,
       music: "",
       //   musicUrl: require(this.music + ".mp3"),
       musicUrl: require("@/assets/music/PoliticalReform.mp3"),
       currentAudio: null,
       currentAudioPosition: 0,
-      currentIndex: null,
-      currentRowData: null,
+      currentIndex: 0,
+      isPlaying: false,
     };
   },
   mounted() {
     this.fetchDataFromBackend();
+    this.startTyping();
   },
 
   methods: {
@@ -80,7 +87,19 @@ export default {
         console.error("Data Acquisition Failure:", error);
       }
     },
+    startTyping() {
+      this.displayedText = "";
+      this.intervalId = setInterval(() => {
+        if (this.currentIndex < this.text.length) {
+          this.displayedText += this.text[this.currentIndex];
+          this.currentIndex++;
+        } else {
+          clearInterval(this.intervalId); // 停止计时器
+        }
+      }, 100); // 每100毫秒显示一个字符，可以根据需要调整速度
+    },
     handlePlay() {
+      this.isPlaying = !this.isPlaying;
       if (this.currentAudio) {
         if (this.currentAudio.paused) {
           // 如果音频已经暂停，从存储的位置继续播放
@@ -233,11 +252,11 @@ export default {
   white-space: normal;
   word-break: break-all;
 }
-.text{
-    margin-left: 50px;
-    margin-right: 50px;
-    font-size: 16px;
-    color: black;
-    line-height: 2;
+.text {
+  margin-left: 50px;
+  margin-right: 50px;
+  font-size: 16px;
+  color: black;
+  line-height: 2;
 }
 </style>
