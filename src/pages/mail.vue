@@ -50,11 +50,12 @@
           </template>
           <template slot-scope="scope">
             <el-button
-              class="play"
-              size="mini"
+              class="play custom-large-button"
               @click="handlePlay(scope.$index, scope.row)"
             >
-              <a-icon type="play-circle" />
+              <a-icon
+                :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"
+              />
             </el-button>
           </template>
         </el-table-column>
@@ -98,6 +99,7 @@ export default {
       ],
       tableHeaderAlign: "right",
       search: "",
+      isPlaying: [],
       currentAudio: null,
       currentAudioPosition: 0,
       currentIndex: null,
@@ -119,10 +121,11 @@ export default {
         console.error("Data Acquisition Failure:", error);
       }
     },
-    
+
     handlePlay(index, rowData) {
       console.log(`正在播放第 ${index} 行的数据: `);
-
+      this.$set(this.isPlaying, index, !this.isPlaying[index]);
+      //暂停或续播
       if (this.currentAudio && this.currentIndex == index) {
         if (this.currentAudio.paused) {
           // 如果音频已经暂停，从存储的位置继续播放
@@ -139,17 +142,26 @@ export default {
         if (progress == 100) {
           this.currentAudio.currentTime = 0;
         }
-      } else if (this.currentAudio) {
+      }
+      //切歌
+      else if (this.currentAudio) {
         if (!this.currentAudio.paused) {
           this.currentAudio.pause();
           console.log("now it is paused.");
         } else {
           console.log("it's already paused.");
         }
+        this.$set(this.isPlaying, this.currentIndex, true);
+        for (let i = 0; i < this.isPlaying.length; i++) {
+          if (i !== index) {
+            this.$set(this.isPlaying, i, false);
+          }
+        }
         let previousRowData = this.currentRowData;
         this.currentIndex = index;
         this.currentRowData = rowData;
         this.currentAudio = null;
+
         const audio = new Audio(rowData.musicUrl);
 
         // audio.addEventListener("canplay", () => {
@@ -172,7 +184,9 @@ export default {
           this.$set(previousRowData, "progress", 0);
           this.currentAudio = audio;
         });
-      } else {
+      }
+      //打开界面后第一次播放音乐
+      else {
         // 否则，创建新的音频对象并播放
         const audio = new Audio(rowData.musicUrl);
         console.log("1111111");
@@ -199,14 +213,14 @@ export default {
       }
     },
 
-    isPlaying(rowData) {
-      // 检查是否当前音频正在播放
-      return (
-        this.currentAudio &&
-        this.currentAudio.src === rowData.musicUrl &&
-        !this.currentAudio.paused
-      );
-    },
+    // isPlaying(rowData) {
+    //   // 检查是否当前音频正在播放
+    //   return (
+    //     this.currentAudio &&
+    //     this.currentAudio.src === rowData.musicUrl &&
+    //     !this.currentAudio.paused
+    //   );
+    // },
 
     handleSliderChange(value) {
       if (this.currentAudio) {
@@ -248,6 +262,7 @@ export default {
 }
 .play {
   position: relative;
+  border: none;
   left: -25px;
   width: 57px;
   height: 28px;
@@ -274,12 +289,16 @@ export default {
   white-space: normal;
 }
 
-canvas {
+/* canvas {
   width: 100%;
-  height: 100px; /* 设置音波图的高度*/
-}
+  height: 100px;
+} */
 
 .custom-slider-wrapper .el-slider__button {
   display: none;
+}
+.custom-large-button {
+  font-size: 30px;
+  padding: 20px 20px;
 }
 </style>
