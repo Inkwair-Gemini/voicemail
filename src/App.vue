@@ -5,11 +5,11 @@
 </template>
 
 <script>
-  import Menu from "./components/Menu";
+  import Menu from "./pages/Menu.vue";
+  import Delete from "./pages/Delete.vue";
     export default {
       name: 'App',
       components: {Menu},
-
     }
 </script>
 

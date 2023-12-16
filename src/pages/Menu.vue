@@ -84,8 +84,8 @@
 <script>
   import {ref} from 'vue'
   import axios from 'axios'
-  import Login from './Login.vue';
-  import Register from './Register.vue';
+  import Login from '../components/Login.vue';
+  import Register from '../components/Register.vue';
   export default {
     name:"Menu",
     components:{Login,Register},
@@ -136,7 +136,7 @@
       avatarSubmit(){
         this.user.avatarUrl=this.avatarform.url
         localStorage.setItem("user",JSON.stringify(this.user))
-        axios.post('http://localhost:8080/user/updateUser',JSON.stringify(this.user)).then(
+        axios.post('http://localhost:8080/user/updateUser',this.user).then(
           response=>{
               console.log(response.data)
           },

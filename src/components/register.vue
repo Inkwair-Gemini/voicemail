@@ -54,7 +54,7 @@ import axios from 'axios';
                 }else if(this.registerUser.password!==this.registerUser.repassword){
                   alert("两次输入的密码不一致！")
                 }else{
-                  axios.post(`http://localhost:8080/user/addUser`,JSON.stringify(this.registerUser)).then(()=>{
+                  axios.post(`http://localhost:8080/user/addUser`,this.registerUser).then(()=>{
                     Response=>{console.log(Response.data)},
                     error=>{console.log(error.message)}
                   })

@@ -6,8 +6,8 @@ let appTray = null;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 312,
-        height: 599,
+        width: 313,
+        height: 600,
         show: false, // 设置为 false，加载完成后自动隐藏
         autoHideMenuBar:true,//菜单栏
         frame:false,
@@ -49,6 +49,35 @@ function setTray() {
 ipcMain.on('open-tray', () => {
     setTray();
 });
+
+function createDeleteWindow() {
+    const newWindow = new BrowserWindow({
+      width: 600,
+      height: 400,
+      show: false, // 不立即显示新窗口
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
+    });
+  
+    newWindow.loadFile('newWindow.html'); // 加载新窗口的 Vue 组件
+  
+    newWindow.once('ready-to-show', () => {
+      newWindow.show(); // 当新窗口准备好后显示
+    });
+  
+    newWindow.on('closed', () => {
+      // 当新窗口关闭时，显示主窗口内容
+      if (mainWindow) {
+        mainWindow.webContents.executeJavaScript('showParentContent()');
+      }
+    });
+  }
+
+ipcMain.on('open-delete-window', () => {
+    createDeleteWindow();
+  });
 
 app.on('ready', createWindow)
 

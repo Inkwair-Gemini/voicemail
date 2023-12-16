@@ -4,11 +4,19 @@ import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
+//引入路由
+import VueRouter from 'vue-router'
+//引入路由器
+import router from './router'
 Vue.use(Antd);
 Vue.use(ElementUI);
+Vue.use(VueRouter)
+
 Vue.config.productionTip = false
+
 new Vue({
   render: h => h(App),
+  router,
   beforeCreate() {
 		Vue.prototype.$bus = this //安装全局事件总线，$bus就是当前应用的vm
 	},

@@ -10,6 +10,6 @@ module.exports = defineConfig({
   lintOnSave:false, //关闭语法检查
   transpileDependencies: true,
   devServer:{
-    proxy: 'http://localhost:9090'
+    proxy: 'http://localhost:5000'
   }
 })
