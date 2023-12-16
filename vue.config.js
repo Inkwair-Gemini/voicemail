@@ -1,5 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+  publicPath: "./",//配置静态资源
   pages:{
     index:{
       //入口
@@ -9,6 +10,6 @@ module.exports = defineConfig({
   lintOnSave:false, //关闭语法检查
   transpileDependencies: true,
   devServer:{
-    proxy: 'http://localhost:9090'
+    proxy: 'http://localhost:5000'
   }
 })

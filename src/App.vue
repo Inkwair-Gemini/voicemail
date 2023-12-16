@@ -1,15 +1,14 @@
 <template>
   <div id="app">
-    <Menu></Menu>
+    <detail></detail>
   </div>
 </template>
 
 <script>
-  import Menu from "./components/Menu";
+  import detail from "./pages/detail.vue";
     export default {
       name: 'App',
-      components: {Menu},
-
+      components: {detail},
     }
 </script>
 

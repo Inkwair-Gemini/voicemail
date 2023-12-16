@@ -41,7 +41,7 @@ import axios from 'axios';
                 this.dialogVisible = true;
             },
             submit(){
-                // axios.post('http://localhost:8080/user/loginUser',JSON.stringify(this.loginUser)).then(
+                // axios.post('http://localhost:8080/user/loginUser',this.loginUser).then(
                 //     response=>{
                 //         // const result=response.data
                         const result={
