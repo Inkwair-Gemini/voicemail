@@ -84,8 +84,8 @@
 <script>
   import {ref} from 'vue'
   import axios from 'axios'
-  import Login from '../components/Login.vue';
-  import Register from '../components/Register.vue';
+  import Login from '../components/login.vue';
+  import Register from '../components/register.vue';
   export default {
     name:"Menu",
     components:{Login,Register},
