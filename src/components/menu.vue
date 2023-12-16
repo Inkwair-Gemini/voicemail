@@ -108,14 +108,10 @@
     },
     methods: {
       quit(){
-        this.$confirm('确定退出程序?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          window.close()
-        }).catch(() => {         
-        });
+          let res=confirm('确定退出程序?')
+          if(res){
+            close()
+          }
       },
       login(){
           this.$bus.$emit("login")

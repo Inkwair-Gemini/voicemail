@@ -1,5 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+  publicPath: "./",//配置静态资源
   pages:{
     index:{
       //入口
