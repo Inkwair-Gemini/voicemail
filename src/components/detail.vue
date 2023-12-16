@@ -28,7 +28,6 @@
             <a-icon type="backward" />
           </el-button>
           <el-button class="play custom-large-button" @click="handlePlay()">
-            <!-- <a-icon type="caret-right" /> -->
             <a-icon :type="isPlaying ? 'pause' : 'caret-right'" />
           </el-button>
           <el-button class="play custom-large-button" @click="fastForward()">
