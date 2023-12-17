@@ -2,9 +2,12 @@
 import VueRouter from "vue-router"
 import Delete from "../pages/Delete.vue"
 import Menu from "../pages/Menu.vue"
-import Mail from "../pages/Mail.vue"
 import Register from "../pages/Register.vue"
 import Login from "../pages/Login.vue"
+import Mail from "../pages/mail.vue"
+import Register from "../components/register.vue"
+import Login from "../components/login.vue"
+import Detail from "../components/Detail.vue"
 
 export default new VueRouter({
     routes:[
@@ -27,6 +30,10 @@ export default new VueRouter({
         {
             path:'/register',
             component:Register,
+        },
+        {
+            path:'/detail',
+            component:Detail,
         },
     ]
 })
