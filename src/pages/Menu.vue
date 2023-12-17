@@ -66,7 +66,7 @@
           <label class="btn btn-outline-primary" for="lang2"><span class="fontspan">英</span></label>
         </div>
       </div>
-      <div class="second hovergrey">
+      <div class="second hovergrey" @click="toDelete">
         <label class="line-label">最近删除</label>
         <span class="deleteValue">{{ deleteNumber }}</span>
         <i class="el-icon-arrow-right"/>
@@ -153,6 +153,9 @@
         //     error=>{console.log(error.message)}
         //   })
         return 3
+      },
+      toDelete(){
+        electronAPI.openWindow("delete")
       }
     },
     mounted(){

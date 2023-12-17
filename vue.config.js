@@ -7,9 +7,14 @@ module.exports = defineConfig({
       entry:'src/main.js',
     }
   },
-  lintOnSave:false, //关闭语法检查
-  transpileDependencies: true,
+  lintOnSave:false, 
+  transpileDependencies: false,//关闭语法检查
   devServer:{
     proxy: 'http://localhost:5000'
+  },
+  pluginOptions: {
+    electronBuilder: {
+      preload: "src/preload.js" //将preloadp配置为全局对象
+    }
   }
 })

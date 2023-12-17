@@ -1,8 +1,12 @@
-//eletron
+//eletron 主进程
 const { app, BrowserWindow ,Tray, ipcMain ,screen} = require('electron')
+const path=require('path')
 
-let mainWindow
+let mainWindow =null;
 let appTray = null;
+let newWindow = null;
+let deleteWinowd_Width = 506;
+let deleteWinowd_Height = 726;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -12,7 +16,12 @@ function createWindow() {
         autoHideMenuBar:true,//菜单栏
         frame:false,
         alwaysOnTop: true,
-    })
+        webPreferences:{
+          nodeIntegration: true,
+          contextIsolation: true,
+          preload: path.join(__dirname, 'preload.js'),
+        }
+    });
 
     mainWindow.loadURL('http://localhost:8080') // 本地运行的 Vue 项目的地址
     
@@ -29,6 +38,7 @@ function createWindow() {
         mainWindow.hide(); // 加载完成后隐藏窗口
         setTray();
     });
+
 }
 
 function setTray() {
@@ -44,40 +54,37 @@ function setTray() {
         mainWindow.setPosition(x, y); // 设置窗口位置
         mainWindow.show(); // 点击托盘图标显示窗口
     });
-  }
+}
 
 ipcMain.on('open-tray', () => {
     setTray();
 });
 
-function createDeleteWindow() {
-    const newWindow = new BrowserWindow({
-      width: 600,
-      height: 400,
-      show: false, // 不立即显示新窗口
+ipcMain.on('open-new-window', (event,route) => {
+  mainWindow.hide();
+  // 创建新窗口
+  if (newWindow === null) {
+    newWindow = new BrowserWindow({
+      width: deleteWinowd_Width,
+      height: deleteWinowd_Height,
+      autoHideMenuBar:true,
+      resizable: false, // 禁止窗口缩放
+      maximizable: false, // 禁止最大化
       webPreferences: {
         nodeIntegration: true,
-        contextIsolation: false,
-      },
-    });
-  
-    newWindow.loadFile('newWindow.html'); // 加载新窗口的 Vue 组件
-  
-    newWindow.once('ready-to-show', () => {
-      newWindow.show(); // 当新窗口准备好后显示
-    });
-  
-    newWindow.on('closed', () => {
-      // 当新窗口关闭时，显示主窗口内容
-      if (mainWindow) {
-        mainWindow.webContents.executeJavaScript('showParentContent()');
+        contextIsolation: true,
       }
     });
   }
 
-ipcMain.on('open-delete-window', () => {
-    createDeleteWindow();
+  // 加载指定路由内容
+  newWindow.loadURL(decodeURIComponent("http://localhost:8080/#/"+route))
+
+  // 在窗口关闭时重置窗口变量
+  newWindow.on('closed', () => {
+    newWindow = null;
   });
+});
 
 app.on('ready', createWindow)
 

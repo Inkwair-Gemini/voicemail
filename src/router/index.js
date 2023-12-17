@@ -2,11 +2,11 @@
 import VueRouter from "vue-router"
 import Delete from "../pages/Delete.vue"
 import Menu from "../pages/Menu.vue"
-  
+
 export default new VueRouter({
     routes:[
         {
-            path:'/menu',
+            path:'/',
             component:Menu,
         },
         {

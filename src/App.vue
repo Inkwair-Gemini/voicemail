@@ -1,18 +1,11 @@
 <template>
   <div id="app">
-    <Menu></Menu>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import Menu from "./pages/Menu.vue";
-  import Delete from "./pages/Delete.vue";
     export default {
       name: 'App',
-      components: {Menu},
     }
 </script>
-
-<style>
-
-</style>
