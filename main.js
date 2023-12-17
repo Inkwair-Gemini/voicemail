@@ -4,17 +4,18 @@ const path=require('path')
 
 let mainWindow =null;
 let appTray = null;
-let newWindow = null;
-let deleteWinowd_Width = 506;
-let deleteWinowd_Height = 726;
+let deleteWindow = null;
+let mailWindow = null;
+let loginWindow = null;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 313,
         height: 600,
         show: false, // 设置为 false，加载完成后自动隐藏
-        autoHideMenuBar:true,//菜单栏
-        frame:false,
+        autoHideMenuBar: true,//菜单栏
+        // resizable: false, // 禁止窗口缩放
+        frame: false,
         alwaysOnTop: true,
         webPreferences:{
           nodeIntegration: true,
@@ -24,7 +25,7 @@ function createWindow() {
     });
 
     mainWindow.loadURL('http://localhost:8080') // 本地运行的 Vue 项目的地址
-    
+
     // 当窗口失去焦点时隐藏窗口
     mainWindow.on('blur', () => {
         mainWindow.hide();
@@ -45,7 +46,7 @@ function setTray() {
     appTray = new Tray('./public/Mail II.png');
     appTray.setToolTip('右键打开设置');
     appTray.on('right-click', () => {
-        const display = screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
+        // const display = screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
         const windowSize = mainWindow.getSize();
         const cursorPosition = screen.getCursorScreenPoint();
         const x = cursorPosition.x - windowSize[0];
@@ -60,22 +61,22 @@ ipcMain.on('open-tray', () => {
     setTray();
 });
 
-ipcMain.on('open-new-window', (event,route) => {
-  mainWindow.hide();
+function openNewWindow(newWindow,route,Width,Height){
   // 创建新窗口
   if (newWindow === null) {
     newWindow = new BrowserWindow({
-      width: deleteWinowd_Width,
-      height: deleteWinowd_Height,
+      width: Width,
+      height: Height,
       autoHideMenuBar:true,
-      resizable: false, // 禁止窗口缩放
+      // resizable: false, // 禁止窗口缩放
       maximizable: false, // 禁止最大化
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,
+        preload: path.join(__dirname, 'preload.js'),
       }
     });
-  }
+}
 
   // 加载指定路由内容
   newWindow.loadURL(decodeURIComponent("http://localhost:8080/#/"+route))
@@ -84,6 +85,23 @@ ipcMain.on('open-new-window', (event,route) => {
   newWindow.on('closed', () => {
     newWindow = null;
   });
+}
+ipcMain.on('open-delete-window', (event,route) => {
+  mainWindow.hide();
+  openNewWindow(deleteWindow,route,506,726)
+});
+
+ipcMain.on('open-mail-window', (event,route) => {
+  mainWindow.hide();
+  openNewWindow(mailWindow,route,506,726)
+});
+
+ipcMain.on('open-login-window', (event,route) => {
+  openNewWindow(loginWindow,route,406,326)
+});
+
+ipcMain.on('open-register-window', (event,route) => {
+  openNewWindow(loginWindow,route,406,326)
 });
 
 app.on('ready', createWindow)

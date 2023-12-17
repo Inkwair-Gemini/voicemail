@@ -1,23 +1,23 @@
 <template>
-  <div class="loginLabel">
-    <el-dialog :visible.sync="dialogVisible" width="30%" @close="close">
+  <div class="container">
+    <div class="dialog">
         <!-- 自定义title -->
         <div slot="title" class="header-title">
             <span>注册</span>
         </div>
-        <el-form v-model="registerUser" label-width="80px">
-            <label class="username">用户名</label>
+        <el-form v-model="registerUser" label-width="80px" class="form">
+            <label class="username">用 户 名</label>
             <el-input class="input1" v-model="registerUser.username" size="small" placeholder="请输入用户名" autofocus></el-input><br><br>
-            <label class="password">密码</label>
+            <label class="password">密 码&nbsp;&nbsp;</label>
             <el-input class="input2" v-model="registerUser.password" size="small" placeholder="请输入密码" show-password></el-input><br><br>
-            <label class="repassword">再次输入密码</label>
+            <label class="repassword">确 认 密 码</label>
             <el-input class="input3" v-model="registerUser.repassword" size="small" placeholder="请再次输入密码" show-password></el-input>
         </el-form>
         <span slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
             <el-button type="primary" @click="submit">注 册</el-button>
         </span>
-    </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -28,7 +28,6 @@ import axios from 'axios';
         name:"Register",
         data() {
             return {
-                dialogVisible: false,
                 registerUser:{
                     username:'',
                     password:'',
@@ -38,7 +37,7 @@ import axios from 'axios';
         },
         methods: {
             close(){
-                this.dialogVisible = false;
+                close()
             },
             userIsExits(username){
               axios.get(`http://localhost:8080/user/selectUserByUsername?username=${username}`).then(()=>{
@@ -60,38 +59,52 @@ import axios from 'axios';
                   })
                   alert("注册成功！")
                 }
-                this.dialogVisible = false;
+                this.close
             }
         },
-        mounted(){
-            this.$bus.$on('registerVisible',()=>{
-                this.dialogVisible=true
-            })
-        }
     }
 </script>
 
 <style scoped>
-  .loginLabel {
-    position: relative;
-    top:-13px;
+  .container{
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 使容器铺满整个视口高度 */
+  }
+  .dialog{
+    width: 400px;
+    height: 300px;
+    min-width: 400px;
+    min-height: 300px;
+    border-radius: 2px; /* 设置圆角边框 */
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
+    overflow: hidden;
+    margin: auto;
   }
   .loginName:hover{
     color: #0d6efd;
   }
   .header-title {
     position: relative;
-    left:-180px;
+    left:16px;
+    top: 16px;
     font-size: 18px;
     line-height: 24px;
     color: #b4bac3;
+  }
+    .form{
+    position: relative;
+    left: 60px;
+    top: 45px;
   }
   .input1,.input2,.input3{
     width: 200px;
   }
   .dialog-footer{
     position: relative;
-    left: -110px;
+    top: 75px;
+    left: 28%;
   }
   .password{
     position: relative;

@@ -1,32 +1,32 @@
 <template>
-  <el-dialog :visible="dialogVisible" width="30%"  @close="close">
-      <!-- 自定义title -->
-      <div slot="title" class="header-title">
-          <span>登陆</span>
-      </div>
-      <el-form v-model="loginUser" label-width="80px">
-          <label>用户名&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          <el-input class="input" v-model="loginUser.username" size="small" placeholder="请输入用户名" autofocus></el-input><br><br>
-          <label>&nbsp;&nbsp;&nbsp;密码&nbsp;&nbsp;&nbsp;&nbsp;</label>
-          <el-input class="input" v-model="loginUser.password" size="small" placeholder="请输入密码" show-password></el-input>
-      </el-form>
-      <label class="registerName" @click="register">没有账号?</label>
-      <br>
-      <span slot="footer" class="dialog-footer">
-          <el-button @click="close">取 消</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
-          <el-button type="primary" @click="submit">登 陆</el-button>
-      </span>
-  </el-dialog>
+  <div class="container">
+    <div class="dialog">
+        <!-- 自定义title -->
+        <div class="header-title">
+            <span>登陆</span>
+        </div>
+        <el-form v-model="loginUser" label-width="80px" class="form">
+            <label>用 户 名</label>
+            <el-input class="input" v-model="loginUser.username" size="small" placeholder="请输入用户名" autofocus></el-input><br><br>
+            <label class="pas">密 码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <el-input class="input" v-model="loginUser.password" size="small" placeholder="请输入密码" show-password></el-input>
+        </el-form>
+        <label class="registerName" @click="register">没有账号?</label>
+        <br>
+        <span class="dialog-footer">
+            <el-button @click="close">取 消</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <el-button type="primary" @click="submit">登 陆</el-button>
+        </span>
+    </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
     export default {
         name:"Login",
-        components:{},
         data() {
             return {
-                dialogVisible: false,
                 loginUser:{
                     username:'',
                     password:'',
@@ -35,10 +35,7 @@ import axios from 'axios';
         },
         methods: {
             close(){
-                this.dialogVisible = false;
-            },
-            login(){
-                this.dialogVisible = true;
+                close()
             },
             submit(){
                 // axios.post('http://localhost:8080/user/loginUser',this.loginUser).then(
@@ -55,7 +52,7 @@ import axios from 'axios';
                         }
                         if(result.success===true){
                             this.$bus.$emit("getUser",result.user,)
-                            this.dialogVisible = false;
+                            this.close
                         }else{
                             alert('用户名或密码错误！')
                         }
@@ -64,21 +61,33 @@ import axios from 'axios';
                 // )
             },
             register(){
-                this.dialogVisible = false;
-                this.$bus.$emit("registerVisible")
+                electronAPI.openRegisterWindow("register")
             }
-        },
-        mounted(){
-            this.$bus.$on("login",this.login)
         }
     }
 </script>
 
 <style scoped>
+  .container{
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 使容器铺满整个视口高度 */
+  }
+  .dialog{
+    width: 400px;
+    height: 300px;
+    min-width: 400px;
+    min-height: 300px;
+    border-radius: 2px; /* 设置圆角边框 */
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
+    overflow: hidden;
+    margin: auto;
+  }
   .registerName{
     position: relative;
-    top:5px;
-    left: 95px;
+    top:65px;
+    right: -270px;
   }
   .registerName:hover{
     color: #0d6efd;
@@ -86,16 +95,29 @@ import axios from 'axios';
   }
   .header-title {
     position: relative;
-    left:-180px;
+    top: 16px;
+    left:16px;
     font-size: 18px;
     line-height: 24px;
     color: #b4bac3;
   }
+  .form{
+    position: relative;
+    left: 45px;
+    top: 60px;
+  }
   .input{
-    width: 200px;
+    position: relative;
+    left: 55px;
+    width: 180px;
+  }
+  .pas{
+    position: relative;
+    left: 17px;
   }
   .dialog-footer{
     position: relative;
-    left: -110px;
+    top: 95px;
+    left: 28%;
   }
 </style>

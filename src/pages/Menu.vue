@@ -28,7 +28,7 @@
 
         <!-- 标签 -->
         <div class="loginLabel">
-          <label v-show="!isLogin"  class="loginName" @click="login">{{user.username}}</label>
+          <label v-show="!isLogin"  class="loginName" @click="toLogin">{{user.username}}</label>
           <el-popover placement="top-start" v-model="quitVisible">
             <p class="quitConfirm"><br>确定退出登录吗？</p>
             <div class="quitButton">
@@ -38,8 +38,6 @@
             <label slot="reference" v-show="isLogin" class="quitnLogin">{{user.username}}</label>
           </el-popover>
         </div>
-        <Login/>
-        <Register/>
 
       </div>
       <div class="second">
@@ -52,7 +50,7 @@
           <label class="btn btn-outline-primary" for="switch2"><span class="fontspan">关</span></label>
         </div>
       </div>
-      <div class="second hovergrey">
+      <div class="second hovergrey" @click="toMail">
         <label class="line-label">进入信箱</label>
         <i class="el-icon-arrow-right"/>
       </div>
@@ -84,11 +82,8 @@
 <script>
   import {ref} from 'vue'
   import axios from 'axios'
-  import Login from '../components/Login.vue';
-  import Register from '../components/Register.vue';
   export default {
     name:"Menu",
-    components:{Login,Register},
     data() {
       return {
         value1:ref(true),
@@ -112,9 +107,6 @@
           if(res){
             close()
           }
-      },
-      login(){
-          this.$bus.$emit("login")
       },
       quitLogin(){
           this.quitVisible=false
@@ -156,6 +148,12 @@
       },
       toDelete(){
         electronAPI.openWindow("delete")
+      },
+      toMail(){
+        electronAPI.openMailWindow("mail")
+      },
+      toLogin(){
+        electronAPI.openLoginWindow("login")
       }
     },
     mounted(){
@@ -185,11 +183,10 @@
 
 <style scoped>
   .container{
-    display: flex;
+    display: flex !important;
     justify-content: center;
     align-items: center;
     height: 100vh; /* 使容器铺满整个视口高度 */
-    color: #b4bac3;
   }
   .main{
     width: 314px;
