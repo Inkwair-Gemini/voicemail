@@ -22,8 +22,8 @@
           <!-- <audio ref="audio" style="width: 100px"></audio> -->
           <el-table-column :min-width="10"></el-table-column>
           <el-table-column
-            label="录制人"
-            prop="sender"
+            label="录制时间"
+            prop="timestamp"
             width="80"
           ></el-table-column>
           <el-table-column label="">
