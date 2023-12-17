@@ -68,8 +68,8 @@ function openNewWindow(newWindow, route, Width, Height) {
     newWindow = new BrowserWindow({
       width: Width,
       height: Height,
-      autoHideMenuBar: true,
-      // resizable: false, // 禁止窗口缩放
+      autoHideMenuBar:true,
+      resizable: false, // 禁止窗口缩放
       maximizable: false, // 禁止最大化
       webPreferences: {
         nodeIntegration: true,
@@ -107,6 +107,10 @@ ipcMain.on('open-register-window', (event, route) => {
 
 ipcMain.on('open-detail-window', (event, route) => {
   openNewWindow(detailWindow, route, 506, 726)
+});
+
+ipcMain.on('login', (event,info) => {
+  mainWindow.webContents.send("getLoginInfo",info)
 });
 
 app.on('ready', createWindow)

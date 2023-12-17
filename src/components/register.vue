@@ -40,12 +40,13 @@ import axios from 'axios';
                 close()
             },
             userIsExits(username){
-              axios.get(`http://localhost:8080/user/selectUserByUsername?username=${username}`).then(()=>{
-                Response=>{
-                  return Response.data
-                },
-                error=>{console.log(error.message)}
-              })
+              // axios.get(`http://localhost:8080/user/selectUserByUsername?username=${username}`).then(()=>{
+              //   Response=>{
+              //     return Response.data
+              //   },
+              //   error=>{console.log(error.message)}
+              // })
+              return false;
             },
             submit(){
                 if(this.userIsExits(this.registerUser.username)){
@@ -53,13 +54,14 @@ import axios from 'axios';
                 }else if(this.registerUser.password!==this.registerUser.repassword){
                   alert("两次输入的密码不一致！")
                 }else{
-                  axios.post(`http://localhost:8080/user/addUser`,this.registerUser).then(()=>{
-                    Response=>{console.log(Response.data)},
-                    error=>{console.log(error.message)}
-                  })
+                  // axios.post(`http://localhost:8080/user/addUser`,this.registerUser).then(()=>{
+                  //   Response=>{console.log(Response.data)},
+                  //   error=>{console.log(error.message)}
+                  // })
                   alert("注册成功！")
+                  electronAPI.openLoginWindow("login")
+                  close()
                 }
-                this.close
             }
         },
     }
