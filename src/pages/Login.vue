@@ -84,6 +84,7 @@ import axios from 'axios';
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
     overflow: hidden;
     margin: auto;
+    color: rgb(135, 131, 131);
   }
   .registerName{
     position: relative;
@@ -100,7 +101,7 @@ import axios from 'axios';
     left:16px;
     font-size: 18px;
     line-height: 24px;
-    color: #b4bac3;
+    color: rgb(135, 131, 131);
   }
   .form{
     position: relative;
@@ -109,8 +110,7 @@ import axios from 'axios';
   }
   .input{
     position: relative;
-    left: 55px;
-    width: 180px;
+    width: 280px;
   }
   .pas{
     position: relative;

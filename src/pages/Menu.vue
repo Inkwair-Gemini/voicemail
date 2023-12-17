@@ -10,21 +10,6 @@
         </el-row>
 
         <el-button size="medium" circle @click="uploadAvatar"><i class="el-icon-camera-solid"/></el-button>
-        <el-dialog :visible.sync="avatarVisible">
-          <!-- 自定义title -->
-          <div slot="title" class="header-title">
-              <span>上传头像</span>
-          </div>
-          <el-form :model="avatarform">
-            <el-form-item label="图片链接" :label-width="formLabelWidth">
-              <el-input v-model="avatarform.url" autocomplete="off"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="avatarVisible = false">取 消</el-button>
-            <el-button type="primary" @click="avatarSubmit">确 定</el-button>
-          </div>
-        </el-dialog>
 
         <!-- 标签 -->
         <div class="loginLabel">
@@ -89,10 +74,7 @@
         value1:ref(true),
         value2:ref(true),
         quitVisible:false,
-        avatarVisible:false,
         isLogin:false,
-        avatarform:{url:''},
-        formLabelWidth: '70px',
         deleteNumber:0,
         user:{
           id:'',
@@ -118,24 +100,11 @@
           this.$forceUpdate();
       },
       uploadAvatar(){
-        if(this.isLogin){
-          this.avatarform.url=''
-          this.avatarVisible=true
-        }else{
-          alert("未登录,请先登录")
-        }
-      },
-      avatarSubmit(){
-        this.user.avatarUrl=this.avatarform.url
-        localStorage.setItem("user",JSON.stringify(this.user))
-        axios.post('http://localhost:8080/user/updateUser',this.user).then(
-          response=>{
-              console.log(response.data)
-          },
-          error=>{console.log(error.message)}
-        )
-        this.avatarVisible=false
-        this.$forceUpdate();
+          if(this.isLogin){
+              electronAPI.openUploadWindow("upload")
+          }else{
+              alert("未登录,请先登录")
+          }
       },
       getDeleteNum(username){
         //   axios.get(`http://localhost:8080/delete/getListByUsername?username=${username}`).then(()=>{
@@ -144,13 +113,21 @@
         //     },
         //     error=>{console.log(error.message)}
         //   })
-        return 3
+        return 100
       },
       toDelete(){
-        electronAPI.openDeleteWindow("delete")
+        if(this.isLogin){
+          electronAPI.openDeleteWindow("delete")
+        }else{
+          alert("未登录,请先登录")
+        }
       },
       toMail(){
-        electronAPI.openMailWindow("mail")
+        if(this.isLogin){
+          electronAPI.openMailWindow("mail")
+        }else{
+          alert("未登录,请先登录")
+        }
       },
       toLogin(){
         electronAPI.openLoginWindow("login")
@@ -158,14 +135,19 @@
     },
     mounted(){
       electronAPI.receive("getLoginInfo",(loginUser)=>{
-        localStorage.setItem('user',JSON.stringify(loginUser))
-        this.isLogin=true
-        this.user.id=loginUser.id
-        this.user.username=loginUser.username
-        this.user.avatarUrl=loginUser.avatarUrl
-        this.deleteNumber=loginUser.deleteListNumber
+          localStorage.setItem('user',JSON.stringify(loginUser))
+          this.isLogin=true
+          this.user.id=loginUser.id
+          this.user.username=loginUser.username
+          this.user.avatarUrl=loginUser.avatarUrl
+          this.deleteNumber=loginUser.deleteListNumber
       })
-
+      electronAPI.receive("getAvatarInfo",(url)=>{
+          this.user.avatarUrl=url
+      })
+      electronAPI.receive("getDeleteNumber",(num)=>{
+          this.deleteNumber=num
+      })
       const loginUser=JSON.parse(localStorage.getItem('user'))
       if(loginUser){
         this.isLogin=true
@@ -294,16 +276,5 @@
   }
   .quitConfirm{
     text-align: center;
-  }
-  .dialog-footer{
-    position: relative;
-    left: -100px;
-  }
-  .header-title {
-    position: relative;
-    left:-320px;
-    font-size: 18px;
-    line-height: 24px;
-    color: #b4bac3;
   }
 </style>

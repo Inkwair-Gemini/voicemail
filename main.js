@@ -8,6 +8,7 @@ let deleteWindow = null;
 let mailWindow = null;
 let loginWindow = null;
 let detailWindow = null;
+let uploadWindow = null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -15,7 +16,7 @@ function createWindow() {
     height: 600,
     show: false, // 设置为 false，加载完成后自动隐藏
     autoHideMenuBar: true,//菜单栏
-    // resizable: false, // 禁止窗口缩放
+    resizable: false, // 禁止窗口缩放
     frame: false,
     alwaysOnTop: true,
     webPreferences: {
@@ -109,8 +110,18 @@ ipcMain.on('open-detail-window', (event, route) => {
   openNewWindow(detailWindow, route, 506, 726)
 });
 
+ipcMain.on('open-upload-window', (event, route) => {
+  openNewWindow(uploadWindow, route, 400, 200)
+});
+
 ipcMain.on('login', (event,info) => {
   mainWindow.webContents.send("getLoginInfo",info)
+});
+ipcMain.on('avatar', (event,info) => {
+  mainWindow.webContents.send("getAvatarInfo",info)
+});
+ipcMain.on('deleteNumber', (event,info) => {
+  mainWindow.webContents.send("getDeleteNumber",info)
 });
 
 app.on('ready', createWindow)

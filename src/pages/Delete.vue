@@ -65,7 +65,7 @@ import axios from 'axios'
             //   error=>{console.log(error.message)}
             // })
             this.deleteList=this.deleteList.filter(p=>p.id!==id)
-            this.$bus.$emit("getDeleteNumber",this.deleteList.length)
+            electronAPI.send("getDeleteNumber",this.deleteList.length)
           },
           handleDelete(id){
             // const username=this.getUsername
@@ -74,7 +74,7 @@ import axios from 'axios'
             //   error=>{console.log(error.message)}
             // })
             this.deleteList=this.deleteList.filter(p=>p.id!==id)
-            this.$bus.$emit("getDeleteNumber",this.deleteList.length)
+            electronAPI.send("deleteNumber",this.deleteList.length)
           },
           getUsername(){
             return JSON.parse(localStorage.getItem('user')).username
