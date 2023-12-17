@@ -48,7 +48,7 @@
 <script>
 import axios from "axios";
 
-const { ipcRenderer } = require("electron");
+// const { ipcRenderer } = require("electron");
 export default {
   name: "Detail",
   data() {
