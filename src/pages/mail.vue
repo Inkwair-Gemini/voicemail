@@ -15,6 +15,7 @@
           )
         "
         style="width: 100%"
+        @row-click="toDetail"
       >
         <audio ref="audio" style="width: 100px"></audio>
 
@@ -27,7 +28,7 @@
         <el-table-column label="">
           <template slot-scope="scope">
             <!-- 使用 el-slider 作为可拖动的进度条，隐藏指示器 -->
-            <div class="custom-slider-wrapper">
+            <div>
               <el-slider
                 v-model="scope.row.progress"
                 :show-input="false"
@@ -51,7 +52,7 @@
           <template slot-scope="scope">
             <el-button
               class="play custom-large-button"
-              @click="handlePlay(scope.$index, scope.row)"
+              @click.stop="handlePlay(scope.$index, scope.row)"
             >
               <a-icon
                 :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"
@@ -67,9 +68,13 @@
 <script>
 // import Chart from "chart.js";
 import axios from "axios";
+import Vue from "vue";
+import { DatePicker } from "ant-design-vue";
+import "ant-design-vue/dist/antd.css";
+Vue.use(DatePicker);
 
 export default {
-  name: "Mail",
+  name: "Delete",
   data() {
     return {
       title: "最近删除",
@@ -100,6 +105,7 @@ export default {
       currentAudioPosition: 0,
       currentIndex: null,
       currentRowData: null,
+      justChanged: false,
     };
   },
   mounted() {
@@ -222,6 +228,17 @@ export default {
       if (this.currentAudio) {
         this.currentAudio.currentTime =
           (value / 100) * this.currentAudio.duration;
+      }
+      this.justChanged = true;
+      setTimeout(() => {
+        this.justChanged = false;
+      }, 1000);
+    },
+
+    toDetail() {
+      if (this.justChanged == false) {
+        this.currentAudio.pause();
+        electronAPI.openDetailWindow("detail");
       }
     },
   },

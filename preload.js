@@ -5,4 +5,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     openMailWindow: (router) => ipcRenderer.send('open-mail-window', router),
     openLoginWindow: (router) => ipcRenderer.send('open-login-window', router),
     openRegisterWindow: (router) => ipcRenderer.send('open-register-window', router),
+    openDetailWindow: (router) => ipcRenderer.send('open-detail-window', router),
 })
