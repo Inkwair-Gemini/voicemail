@@ -164,6 +164,7 @@
         this.user.username=loginUser.username
         this.user.avatarUrl=loginUser.avatarUrl
         this.deleteNumber=loginUser.deleteListNumber
+        console.log('123123312123312')
       })
       const loginUser=JSON.parse(localStorage.getItem('user'))
       if(loginUser){
