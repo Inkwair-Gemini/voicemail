@@ -22,7 +22,7 @@
           <!-- <audio ref="audio" style="width: 100px"></audio> -->
           <el-table-column :min-width="10"></el-table-column>
           <el-table-column
-            label="发件人"
+            label="录制人"
             prop="sender"
             width="80"
           ></el-table-column>
@@ -87,26 +87,27 @@ export default {
   data() {
     return {
       title: "最近删除",
-      mailList: [
-        {
-          id: 1,
-          progress: "50",
-          sender: "Zhang",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-        {
-          id: 2,
-          progress: "0",
-          sender: "Li",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-        {
-          id: 3,
-          progress: "0",
-          sender: "Wang",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-      ],
+      // mailList: [
+      //   {
+      //     id: 1,
+      //     progress: "50",
+      //     sender: "Zhang",
+      //     musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+      //   },
+      //   {
+      //     id: 2,
+      //     progress: "0",
+      //     sender: "Li",
+      //     musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+      //   },
+      //   {
+      //     id: 3,
+      //     progress: "0",
+      //     sender: "Wang",
+      //     musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+      //   },
+      // ],
+      mailList: null,
       tableHeaderAlign: "right",
       search: "",
       isPlaying: [],
@@ -115,6 +116,9 @@ export default {
       currentIndex: null,
       currentRowData: null,
       justChanged: false,
+      recorder: null,
+      timestamp: null,
+      url: null,
     };
   },
   mounted() {
@@ -149,10 +153,16 @@ export default {
   methods: {
     async fetchDataFromBackend() {
       try {
-        const response = await axios.get("localhost:8080/");
-        const backendMailList = response.data;
-
-        this.mailList = backendMailList;
+        const response = await axios.get("localhost:5000/addVoice");
+        const responseData = response.data;
+        const tableData = responseData.voice;
+        const mailList = tableData.map((data, index) => ({
+          progress: "0",
+          recorder: data.recorder,
+          timestamp: data.timestamp,
+          musicUrl: require(data.url),
+        }));
+        this.mailList = mailList;
       } catch (error) {
         console.error("Data Acquisition Failure:", error);
       }
@@ -249,15 +259,6 @@ export default {
       }
     },
 
-    // isPlaying(rowData) {
-    //   // 检查是否当前音频正在播放
-    //   return (
-    //     this.currentAudio &&
-    //     this.currentAudio.src === rowData.musicUrl &&
-    //     !this.currentAudio.paused
-    //   );
-    // },
-
     handleSliderChange(value) {
       if (this.currentAudio) {
         this.currentAudio.currentTime =
@@ -271,7 +272,7 @@ export default {
 
     toDetail() {
       if (this.justChanged == false) {
-        electronAPI.openDetailWindow("detail");
+        electronAPI.openDetailWindow("detail", this.timestamp);
         this.currentAudio.pause();
       }
     },
@@ -379,5 +380,4 @@ export default {
   border: none; /* 移除按钮的边框 */
   cursor: pointer; /* 鼠标指针样式，使按钮看起来可点击 */
 }
-
 </style>

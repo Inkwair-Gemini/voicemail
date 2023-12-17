@@ -48,8 +48,9 @@
 <script>
 import axios from "axios";
 
+const { ipcRenderer } = require("electron");
 export default {
-  name:"Detail",
+  name: "Detail",
   data() {
     return {
       title: "浙江工业大学校歌",
@@ -62,21 +63,28 @@ export default {
       currentAudioPosition: 0,
       currentIndex: 0,
       isPlaying: false,
+      timestamp: null,
     };
   },
   mounted() {
     this.fetchDataFromBackend();
     this.startTyping();
+    ipcRenderer.on("open-detail-window", (event, route, timestamp) => {
+      console.log("Received Route:", route);
+      console.log("Received Extra Value:", timestamp);
+      this.timestamp = timestamp;
+    });
   },
 
   methods: {
     async fetchDataFromBackend() {
       try {
-        const response = await axios.get("localhost:8080/");
+        const response = await axios.get("localhost:5000/getInfo/${timestamp}");
         const responseData = response.data;
-        this.title = responseData.title;
+
+        this.timestamp = responseData.timestamp;
         this.text = responseData.text;
-        this.music = responseData.music;
+        this.url = require(responseData.url);
       } catch (error) {
         console.error("Data Acquisition Failure:", error);
       }
