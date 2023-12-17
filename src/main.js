@@ -13,14 +13,10 @@ Vue.use(ElementUI);
 Vue.use(VueRouter)
 Vue.use(Antd);
 Vue.use(DatePicker);
-
 Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router,
-  beforeCreate() {
-		Vue.prototype.$bus = this //安装全局事件总线，$bus就是当前应用的vm
-	},
+  router
 }).$mount('#app')
 

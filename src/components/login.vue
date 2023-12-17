@@ -51,8 +51,8 @@ import axios from 'axios';
                             }
                         }
                         if(result.success===true){
-                            this.$bus.$emit("getUser",result.user,)
-                            this.close
+                            close()
+                            electronAPI.send('login',result.user)
                         }else{
                             alert('用户名或密码错误！')
                         }
@@ -61,6 +61,7 @@ import axios from 'axios';
                 // )
             },
             register(){
+                close()
                 electronAPI.openRegisterWindow("register")
             }
         }

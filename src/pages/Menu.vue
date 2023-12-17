@@ -147,7 +147,7 @@
         return 3
       },
       toDelete(){
-        electronAPI.openWindow("delete")
+        electronAPI.openDeleteWindow("delete")
       },
       toMail(){
         electronAPI.openMailWindow("mail")
@@ -157,15 +157,15 @@
       }
     },
     mounted(){
-      this.$bus.$on('getUser',(loginUser)=>{
+      electronAPI.receive("getLoginInfo",(loginUser)=>{
         localStorage.setItem('user',JSON.stringify(loginUser))
         this.isLogin=true
         this.user.id=loginUser.id
         this.user.username=loginUser.username
         this.user.avatarUrl=loginUser.avatarUrl
         this.deleteNumber=loginUser.deleteListNumber
-        console.log('123123312123312')
       })
+
       const loginUser=JSON.parse(localStorage.getItem('user'))
       if(loginUser){
         this.isLogin=true
