@@ -4,7 +4,7 @@ import Delete from "../pages/Delete.vue"
 import Menu from "../pages/Menu.vue"
 import Register from "../pages/Register.vue"
 import Login from "../pages/Login.vue"
-import Mail from "../pages/Mail.vue"
+import Mail from "../pages/mail.vue"
 import Detail from "../components/Detail.vue"
 import UploadAvatar from "../pages/UploadAvatar.vue"
 

@@ -52,14 +52,12 @@ export default {
   name:"Detail",
   data() {
     return {
-      title: "温家宝谈政治体制改革",
-      text: " 而且，要进行政治体制改革，特别是党和国家领导制度的改革。现在，改革到了攻坚阶段。没有政治体制改革的成功，经济\
-      体制改革不可能进行到底。已经取得的成果还有可能得而复失，社会上新产生的问题也不能从根本上得到解决。文化大革命，这样历史\
-      的悲剧，还有可能重新发生。",
+      title: "浙江工业大学校歌",
+      text: " 烛光烛光，在西子湖畔点燃；心血浇灌，现代化的希望；莘莘学子，巍巍栋梁；扎根在科学沃土，茁壮成长；激荡激荡，着古运河的情怀；沐浴改革，开放之光；工程师的摇篮，新技术的殿堂；紧连着钱江长江，太平洋；任重道远，创建一流；浙江工业大学；开拓奋进，迎接新世纪的挑战；新世纪的挑战；啊啊啊……奔向明天的辉煌；啊啊啊……奔向明天的辉煌！",
       progress: 0,
       music: "",
       //   musicUrl: require(this.music + ".mp3"),
-      musicUrl: require("@/assets/music/PoliticalReform.mp3"),
+      musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
       currentAudio: null,
       currentAudioPosition: 0,
       currentIndex: 0,

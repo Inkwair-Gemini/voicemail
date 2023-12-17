@@ -6,61 +6,69 @@
           <label class="headerlabel">信箱</label>
         </div>
       </div>
-      <el-table
-        :data="
-          mailList.filter(
-            (data) =>
-              !search ||
-              data.sender.toLowerCase().includes(search.toLowerCase())
-          )
-        "
-        style="width: 100%"
-        @row-click="toDetail"
-      >
-        <audio ref="audio" style="width: 100px"></audio>
-
-        <el-table-column :min-width="10"></el-table-column>
-        <el-table-column
-          label="发件人"
-          prop="sender"
-          width="80"
-        ></el-table-column>
-        <el-table-column label="">
-          <template slot-scope="scope">
-            <!-- 使用 el-slider 作为可拖动的进度条，隐藏指示器 -->
-            <div>
-              <el-slider
-                v-model="scope.row.progress"
-                :show-input="false"
-                :show-tooltip="false"
-                :max="100"
-                @change="handleSliderChange"
-              ></el-slider>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column align="right" width="150">
-          <template slot="header" slot-scope="{}">
-            <el-input
-              class="search"
-              v-model="search"
-              size="mini"
-              placeholder="关键字搜索 . ."
-            />
-            <i class="el-icon-search" />
-          </template>
-          <template slot-scope="scope">
-            <el-button
-              class="play custom-large-button"
-              @click.stop="handlePlay(scope.$index, scope.row)"
-            >
-              <a-icon
-                :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"
+      <div>
+        <el-table
+          :data="
+            mailList.filter(
+              (data) =>
+                !search ||
+                data.sender.toLowerCase().includes(search.toLowerCase())
+            )
+          "
+          height="300"
+          style="width: 100%"
+          @row-click="toDetail"
+        >
+          <!-- <audio ref="audio" style="width: 100px"></audio> -->
+          <el-table-column :min-width="10"></el-table-column>
+          <el-table-column
+            label="发件人"
+            prop="sender"
+            width="80"
+          ></el-table-column>
+          <el-table-column label="">
+            <template slot-scope="scope">
+              <div>
+                <el-slider
+                  v-model="scope.row.progress"
+                  :show-input="false"
+                  :show-tooltip="false"
+                  :max="100"
+                  @change="handleSliderChange"
+                ></el-slider>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="right" width="150">
+            <template slot="header" slot-scope="{}">
+              <el-input
+                class="search"
+                v-model="search"
+                size="mini"
+                placeholder="关键字搜索 . ."
               />
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+              <i class="el-icon-search" />
+            </template>
+            <template slot-scope="scope">
+              <el-button
+                class="play custom-large-button"
+                @click.stop="handlePlay(scope.$index, scope.row)"
+              >
+                <a-icon
+                  :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"
+                />
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div id="peak-container">
+        <!-- <div id="zoomview-container" ref="zoomview"></div> -->
+        <div id="overview-container" ref="overview"></div>
+      </div>
+      <div id="demo-controls">
+        <audio ref="audio" id="audio" controls="controls"></audio>
+      </div>
     </div>
   </div>
 </template>
@@ -71,6 +79,7 @@ import axios from "axios";
 import Vue from "vue";
 import { DatePicker } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
+import Peaks from "peaks.js";
 Vue.use(DatePicker);
 
 export default {
@@ -83,19 +92,19 @@ export default {
           id: 1,
           progress: "50",
           sender: "Zhang",
-          musicUrl: require("@/assets/music/test.mp3"),
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
         },
         {
           id: 2,
           progress: "0",
           sender: "Li",
-          musicUrl: require("@/assets/music/test.mp3"),
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
         },
         {
           id: 3,
           progress: "0",
           sender: "Wang",
-          musicUrl: require("@/assets/music/test.mp3"),
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
         },
       ],
       tableHeaderAlign: "right",
@@ -110,8 +119,33 @@ export default {
   },
   mounted() {
     this.fetchDataFromBackend();
+    this.$nextTick(() => {
+      const options = {
+        zoomview: {
+          container: this.$refs.zoomview,
+        },
+        overview: {
+          container: this.$refs.overview,
+        },
+        // 只需要修改dom就可以展示音频或视频波形图
+        mediaElement: this.$refs.audio,
+        webAudio: {
+          audioContext: new AudioContext(),
+        },
+        emitCueEvents: true,
+        //  //显示轴标签
+        showAxisLabels: true,
+      };
+      Peaks.init(options, (err, peaks) => {
+        if (err) {
+          console.log("messge " + err);
+          return;
+        }
+        this.peaks = peaks;
+      });
+    });
   },
-
+  created() {},
   methods: {
     async fetchDataFromBackend() {
       try {
@@ -241,6 +275,18 @@ export default {
         this.currentAudio.pause();
       }
     },
+    zoomable() {
+      let container = document.getElementById("zoomview-container");
+      let zoomview = this.peaks.views.getView("zoomview");
+
+      if (zoomview) {
+        this.peaks.views.destroyZoomview();
+        container.style.display = "none";
+      } else {
+        container.style.display = "block";
+        this.peaks.views.createZoomview(container);
+      }
+    },
   },
 };
 </script>
@@ -314,4 +360,24 @@ export default {
   font-size: 30px;
   padding: 20px 20px;
 }
+#zoomview-container {
+  height: 100px;
+}
+#overview-container {
+  height: 100px;
+}
+#audio::-webkit-media-controls {
+  display: none;
+}
+
+#audio::-webkit-media-controls-play-button {
+  display: inline-block;
+  width: 20px; /* 根据需要设置按钮的宽度和高度 */
+  height: 20px;
+  background-color: #000; /* 设置按钮的背景颜色 */
+  color: #fff; /* 设置按钮的文本颜色 */
+  border: none; /* 移除按钮的边框 */
+  cursor: pointer; /* 鼠标指针样式，使按钮看起来可点击 */
+}
+
 </style>
