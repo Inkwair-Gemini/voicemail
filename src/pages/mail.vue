@@ -232,13 +232,13 @@ export default {
       this.justChanged = true;
       setTimeout(() => {
         this.justChanged = false;
-      }, 1000);
+      }, 1);
     },
 
     toDetail() {
       if (this.justChanged == false) {
-        this.currentAudio.pause();
         electronAPI.openDetailWindow("detail");
+        this.currentAudio.pause();
       }
     },
   },
