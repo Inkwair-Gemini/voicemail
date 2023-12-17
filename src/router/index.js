@@ -3,8 +3,8 @@ import VueRouter from "vue-router"
 import Delete from "../pages/Delete.vue"
 import Menu from "../pages/Menu.vue"
 import Mail from "../pages/Mail.vue"
-import Register from "../components/Register.vue"
-import Login from "../components/Login.vue"
+import Register from "../pages/Register.vue"
+import Login from "../pages/Login.vue"
 
 export default new VueRouter({
     routes:[
