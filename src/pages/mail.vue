@@ -8,17 +8,20 @@
       </div>
       <div>
         <el-table
-          :data="mailList.filter(data=> !search ||data.sender.toLowerCase().includes(search.toLowerCase()))"
+          :data="
+            mailList.filter(
+              (data) =>
+                !search ||
+                data.sender.toLowerCase().includes(search.toLowerCase())
+            )
+          "
           height="500"
           style="width: 100%"
-          @row-click="toDetail">          
+          @row-click="toDetail"
+        >
           <!-- <audio ref="audio" style="width: 100px"></audio> -->
           <el-table-column :min-width="10"></el-table-column>
-          <el-table-column
-            label="录制时间"
-            prop="timestamp"
-            width="80"
-          >
+          <el-table-column label="录制时间" prop="timestamp" width="80">
           </el-table-column>
           <el-table-column label="">
             <template slot-scope="scope">
@@ -45,9 +48,13 @@
             </template>
             <template slot-scope="scope">
               <el-button
-                class="play custom-large-button"
-                @click.stop="handlePlay(scope.$index, scope.row)">
-                <a-icon :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"/>
+                class="play custom-large-button primary-button-style"
+                type="primary"
+                @click.stop="handlePlay(scope.$index, scope.row)"
+              >
+                <a-icon
+                  :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"
+                />
               </el-button>
             </template>
           </el-table-column>
@@ -81,28 +88,28 @@ export default {
         {
           progress: 0,
           sender: "Zhang",
-          recorder: 'data.recorder',
-          timestamp: '',
+          recorder: "data.recorder",
+          timestamp: "",
           musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
         },
         {
           progress: 0,
           sender: "Zhang",
-          recorder: 'data.recorder',
-          timestamp: '',
+          recorder: "data.recorder",
+          timestamp: "",
           musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
         },
       ],
       search: "",
       isPlaying: [],
-      currentAudio: '',
+      currentAudio: "",
       currentAudioPosition: 0,
       currentIndex: 0,
       currentRowData: {},
       justChanged: false,
-      recorder: '',
+      recorder: "",
       timestamp: new Date().getTime(),
-      url: '',
+      url: "",
     };
   },
   mounted() {
@@ -165,7 +172,8 @@ export default {
           this.currentAudio.pause();
           this.currentAudioPosition = this.currentAudio.currentTime;
         }
-        let progress =(this.currentAudio.currentTime / this.currentAudio.duration) * 100;
+        let progress =
+          (this.currentAudio.currentTime / this.currentAudio.duration) * 100;
         if (progress == 100) {
           this.currentAudio.currentTime = 0;
         }
@@ -268,14 +276,14 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh; /* 使容器铺满整个视口高度 */
   color: #b4bac3;
 }
-.main{
+.main {
   width: 500px;
   min-width: 500px;
   min-height: 700px;
@@ -351,5 +359,15 @@ export default {
   color: #fff; /* 设置按钮的文本颜色 */
   border: none; /* 移除按钮的边框 */
   cursor: pointer; /* 鼠标指针样式，使按钮看起来可点击 */
+}
+.primary-button-style {
+  background: white; /* 将默认背景颜色改为白色 */
+  color: #646466; /* 文本颜色，这里使用了原先的蓝色 */
+  border-color: #2979ff;
+}
+
+.primary-button-style:hover {
+  background: #edf3ff; /* 鼠标悬停时的背景颜色 */
+  color: #3e95ff;
 }
 </style>
