@@ -7,6 +7,7 @@ import Login from "../pages/Login.vue"
 import Mail from "../pages/Mail.vue"
 import Detail from "../components/Detail.vue"
 import UploadAvatar from "../pages/UploadAvatar.vue"
+import Record from "../pages/record.vue"
 
 export default new VueRouter({
     routes:[
@@ -37,6 +38,10 @@ export default new VueRouter({
         {
             path:'/upload',
             component:UploadAvatar
+        },
+        {
+            path:'/record',
+            component:Record
         },
     ]
 })
