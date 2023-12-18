@@ -24,13 +24,13 @@
       </template>
       <template>
         <div class="custom-button-wrapper">
-          <el-button class="play custom-large-button" @click="fastBackward()">
+          <el-button class="play custom-large-button primary-button-style" type="primary" @click="fastBackward()">
             <a-icon type="backward" />
           </el-button>
-          <el-button class="play custom-large-button" @click="handlePlay()">
+          <el-button class="play custom-large-button primary-button-style" type="primary" @click="handlePlay()">
             <a-icon :type="isPlaying ? 'pause' : 'caret-right'" />
           </el-button>
-          <el-button class="play custom-large-button" @click="fastForward()">
+          <el-button class="play custom-large-button primary-button-style" type="primary" @click="fastForward()">
             <a-icon type="forward" />
           </el-button>
         </div>
@@ -161,14 +161,14 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh; /* 使容器铺满整个视口高度 */
   color: #b4bac3;
 }
-.main{
+.main {
   width: 500px;
   min-width: 500px;
   min-height: 700px;
@@ -177,7 +177,7 @@ export default {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
   overflow: hidden;
 }
-.he
+
 .header {
   width: 500px;
   height: 60px;
@@ -262,5 +262,15 @@ export default {
   font-size: 16px;
   color: black;
   line-height: 2;
+}
+.primary-button-style {
+  background: white; /* 将默认背景颜色改为白色 */
+  color: #646466; /* 文本颜色，这里使用了原先的蓝色 */
+  border-color: #2979ff;
+}
+
+.primary-button-style:hover {
+  background: #edf3ff; /* 鼠标悬停时的背景颜色 */
+  color: #3e95ff;
 }
 </style>
