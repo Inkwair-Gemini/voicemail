@@ -55,12 +55,17 @@ import axios from 'axios';
                   alert("两次输入的密码不一致！")
                 }else{
                   // axios.post(`http://localhost:8080/user/addUser`,this.registerUser).then(()=>{
-                  //   Response=>{console.log(Response.data)},
+                  //   Response=>{
+                  //     if(Response.data.result===true){
+                  //       alert("注册成功！")
+                  //       electronAPI.openLoginWindow("login")
+                  //       close()
+                  //     }else{
+                  //       alert("注册失败:"+Response.data.reason)
+                  //     }
+                  //   },
                   //   error=>{console.log(error.message)}
                   // })
-                  alert("注册成功！")
-                  electronAPI.openLoginWindow("login")
-                  close()
                 }
             }
         },
