@@ -77,58 +77,22 @@ export default {
   name: "Mail",
   data() {
     return {
-      title: "信箱",
       mailList: [
         {
-          id: 1,
           progress: 0,
           sender: "Zhang",
+          recorder: 'data.recorder',
+          timestamp: '',
           musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
         },
         {
-          id: 2,
           progress: 0,
-          sender: "Li",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-        {
-          id: 3,
-          progress: 0,
-          sender: "Wang",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-        {
-          id: 3,
-          progress: 0,
-          sender: "Wang",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-        {
-          id: 3,
-          progress: 0,
-          sender: "Wang",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-        {
-          id: 3,
-          progress: 0,
-          sender: "Wang",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-        {
-          id: 3,
-          progress: 0,
-          sender: "Wang",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },        
-        {
-          id: 3,
-          progress: 0,
-          sender: "Wang",
+          sender: "Zhang",
+          recorder: 'data.recorder',
+          timestamp: '',
           musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
         },
       ],
-      tableHeaderAlign: "right",
       search: "",
       isPlaying: [],
       currentAudio: '',
@@ -176,7 +140,7 @@ export default {
         const responseData = response.data;
         const tableData = responseData.voice;
         const mailList = tableData.map((data, index) => ({
-          progress: "0",
+          progress: 0,
           recorder: data.recorder,
           timestamp: data.timestamp,
           musicUrl: require(data.url),
@@ -250,7 +214,6 @@ export default {
       else {
         // 否则，创建新的音频对象并播放
         const audio = new Audio(rowData.musicUrl);
-        console.log("1111111");
         audio.addEventListener("canplay", () => {
           this.$refs.audio.src = rowData.musicUrl;
           audio.play();
