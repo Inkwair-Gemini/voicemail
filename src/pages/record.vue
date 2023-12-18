@@ -109,16 +109,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  color: #b4bac3;
+  height: 100vh; /* 使容器铺满整个视口高度 */
 }
 .main {
   width: 400px;
   height: 300px;
-  border-radius: 2px;
-  display: flex;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-  position: relative;
+  border-radius: 2px; /* 设置圆角边框 */
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
 }
 .header {
   width: 500px;
@@ -136,3 +133,4 @@ export default {
   transform: translate(-50%, -50%);
 }
 </style>
+
