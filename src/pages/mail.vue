@@ -17,6 +17,7 @@
           "
           height="500"
           style="width: 100%"
+          stripe
           @row-click="toDetail"
         >
           <!-- <audio ref="audio" style="width: 100px"></audio> -->
@@ -36,16 +37,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="right" width="150">
-            <template slot="header" slot-scope="{}">
-              <el-input
-                class="search"
-                v-model="search"
-                size="mini"
-                placeholder="关键字搜索 . ."
-              />
-              <i class="el-icon-search" />
-            </template>
+          <el-table-column align="right" width="80">
             <template slot-scope="scope">
               <el-button
                 class="play custom-large-button primary-button-style"
@@ -55,6 +47,27 @@
                 <a-icon
                   :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"
                 />
+              </el-button>
+            </template>
+          </el-table-column>
+          <el-table-column align="right" width="80">
+            <template slot="header" slot-scope="{}">
+              <el-input
+                class="search"
+                v-model="search"
+                size="mini"
+                placeholder="关键字搜索 . ."
+                style="width: 30px"
+              />
+              <i class="el-icon-search" />
+            </template>
+            <template slot-scope="scope">
+              <el-button
+                class="delete"
+                type="danger"
+                icon="el-icon-delete"
+                @click.stop="handleDelete(scope.$index)"
+              >
               </el-button>
             </template>
           </el-table-column>
@@ -271,6 +284,17 @@ export default {
         this.peaks.views.createZoomview(container);
       }
     },
+    async handleDelete(index) {
+      try {
+        await axios.post("http://localhost:5000/deleteVoice", { index });
+
+        this.mailList.splice(index, 1);
+
+        console.log("Successfully Deleted.");
+      } catch (error) {
+        console.error("Failed to delete:", error);
+      }
+    },
   },
 };
 </script>
@@ -309,7 +333,6 @@ export default {
 .play {
   position: relative;
   border: none;
-  left: -25px;
   width: 57px;
   height: 28px;
 }
@@ -360,6 +383,7 @@ export default {
   border: none; /* 移除按钮的边框 */
   cursor: pointer; /* 鼠标指针样式，使按钮看起来可点击 */
 }
+
 .primary-button-style {
   background: white; /* 将默认背景颜色改为白色 */
   color: #646466; /* 文本颜色，这里使用了原先的蓝色 */
@@ -369,5 +393,9 @@ export default {
 .primary-button-style:hover {
   background: #edf3ff; /* 鼠标悬停时的背景颜色 */
   color: #3e95ff;
+}
+
+.delete {
+  border: none;
 }
 </style>
