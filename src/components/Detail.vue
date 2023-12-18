@@ -47,8 +47,6 @@
 
 <script>
 import axios from "axios";
-
-// const { ipcRenderer } = require("electron");
 export default {
   name: "Detail",
   data() {
@@ -69,7 +67,7 @@ export default {
   mounted() {
     this.fetchDataFromBackend();
     this.startTyping();
-    ipcRenderer.on("open-detail-window", (event, route, timestamp) => {
+    electronAPI.receive("open-detail-window", (event, route, timestamp) => {
       console.log("Received Route:", route);
       console.log("Received Extra Value:", timestamp);
       this.timestamp = timestamp;
@@ -162,20 +160,24 @@ export default {
 };
 </script>
 
-<style>
-.container {
+<style scoped>
+.container{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh; /* 使容器铺满整个视口高度 */
   color: #b4bac3;
 }
-.main {
+.main{
   width: 500px;
+  min-width: 500px;
+  min-height: 700px;
   height: 700px;
-  border-radius: 2px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  border-radius: 2px; /* 设置圆角边框 */
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
+  overflow: hidden;
 }
+.he
 .header {
   width: 500px;
   height: 60px;

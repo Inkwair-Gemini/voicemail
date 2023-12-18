@@ -8,24 +8,18 @@
       </div>
       <div>
         <el-table
-          :data="
-            mailList.filter(
-              (data) =>
-                !search ||
-                data.sender.toLowerCase().includes(search.toLowerCase())
-            )
-          "
-          height="300"
+          :data="mailList.filter(data=> !search ||data.sender.toLowerCase().includes(search.toLowerCase()))"
+          height="500"
           style="width: 100%"
-          @row-click="toDetail"
-        >
+          @row-click="toDetail">          
           <!-- <audio ref="audio" style="width: 100px"></audio> -->
           <el-table-column :min-width="10"></el-table-column>
           <el-table-column
             label="录制时间"
             prop="timestamp"
             width="80"
-          ></el-table-column>
+          >
+          </el-table-column>
           <el-table-column label="">
             <template slot-scope="scope">
               <div>
@@ -35,7 +29,7 @@
                   :show-tooltip="false"
                   :max="100"
                   @change="handleSliderChange"
-                ></el-slider>
+                />
               </div>
             </template>
           </el-table-column>
@@ -52,11 +46,8 @@
             <template slot-scope="scope">
               <el-button
                 class="play custom-large-button"
-                @click.stop="handlePlay(scope.$index, scope.row)"
-              >
-                <a-icon
-                  :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"
-                />
+                @click.stop="handlePlay(scope.$index, scope.row)">
+                <a-icon :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"/>
               </el-button>
             </template>
           </el-table-column>
@@ -83,42 +74,71 @@ import Peaks from "peaks.js";
 Vue.use(DatePicker);
 
 export default {
-  name: "Delete",
+  name: "Mail",
   data() {
     return {
-      title: "最近删除",
-      // mailList: [
-      //   {
-      //     id: 1,
-      //     progress: "50",
-      //     sender: "Zhang",
-      //     musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-      //   },
-      //   {
-      //     id: 2,
-      //     progress: "0",
-      //     sender: "Li",
-      //     musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-      //   },
-      //   {
-      //     id: 3,
-      //     progress: "0",
-      //     sender: "Wang",
-      //     musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-      //   },
-      // ],
-      mailList: null,
+      title: "信箱",
+      mailList: [
+        {
+          id: 1,
+          progress: 0,
+          sender: "Zhang",
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+        },
+        {
+          id: 2,
+          progress: 0,
+          sender: "Li",
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+        },
+        {
+          id: 3,
+          progress: 0,
+          sender: "Wang",
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+        },
+        {
+          id: 3,
+          progress: 0,
+          sender: "Wang",
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+        },
+        {
+          id: 3,
+          progress: 0,
+          sender: "Wang",
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+        },
+        {
+          id: 3,
+          progress: 0,
+          sender: "Wang",
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+        },
+        {
+          id: 3,
+          progress: 0,
+          sender: "Wang",
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+        },        
+        {
+          id: 3,
+          progress: 0,
+          sender: "Wang",
+          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+        },
+      ],
       tableHeaderAlign: "right",
       search: "",
       isPlaying: [],
-      currentAudio: null,
+      currentAudio: '',
       currentAudioPosition: 0,
-      currentIndex: null,
-      currentRowData: null,
+      currentIndex: 0,
+      currentRowData: {},
       justChanged: false,
-      recorder: null,
-      timestamp: null,
-      url: null,
+      recorder: '',
+      timestamp: new Date().getTime(),
+      url: '',
     };
   },
   mounted() {
@@ -149,7 +169,6 @@ export default {
       });
     });
   },
-  created() {},
   methods: {
     async fetchDataFromBackend() {
       try {
@@ -182,9 +201,7 @@ export default {
           this.currentAudio.pause();
           this.currentAudioPosition = this.currentAudio.currentTime;
         }
-        let progress =
-          (this.currentAudio.currentTime / this.currentAudio.duration) * 100;
-        console.log(progress);
+        let progress =(this.currentAudio.currentTime / this.currentAudio.duration) * 100;
         if (progress == 100) {
           this.currentAudio.currentTime = 0;
         }
@@ -219,8 +236,6 @@ export default {
           audio.addEventListener("timeupdate", () => {
             // 计算进度百分比
             let progress = (audio.currentTime / audio.duration) * 100;
-            console.log(progress);
-            // 更新数据对象中的进度
             if (progress == 100) {
               progress = 0;
             }
@@ -239,13 +254,10 @@ export default {
         audio.addEventListener("canplay", () => {
           this.$refs.audio.src = rowData.musicUrl;
           audio.play();
-          console.log("1111111");
           // 监听音频播放进度变化事件
           audio.addEventListener("timeupdate", () => {
             // 计算进度百分比
             let progress = (audio.currentTime / audio.duration) * 100;
-            console.log(progress);
-            // 更新数据对象中的进度
             if (progress == 100) {
               progress = 0;
             }
@@ -292,19 +304,22 @@ export default {
 };
 </script>
 
-<style>
-.container {
+<style scoped>
+.container{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh; /* 使容器铺满整个视口高度 */
   color: #b4bac3;
 }
-.main {
+.main{
   width: 500px;
+  min-width: 500px;
+  min-height: 700px;
   height: 700px;
-  border-radius: 2px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  border-radius: 2px; /* 设置圆角边框 */
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
+  overflow: hidden;
 }
 .header {
   width: 500px;
@@ -348,12 +363,6 @@ export default {
   word-break: break-all;
   white-space: normal;
 }
-
-/* canvas {
-  width: 100%;
-  height: 100px;
-} */
-
 .custom-slider-wrapper .el-slider__button {
   display: none;
 }

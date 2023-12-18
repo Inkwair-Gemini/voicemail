@@ -107,7 +107,7 @@ ipcMain.on('open-register-window', (event, route) => {
 });
 
 ipcMain.on('open-detail-window', (event, route, timestamp) => {
-  openNewWindow(detailWindow, route, 506, 726, timestamp)
+  openNewWindow(detailWindow, route, 506, 726,timestamp)
 });
 
 ipcMain.on('open-upload-window', (event, route) => {
