@@ -5,43 +5,44 @@ import Menu from "../pages/Menu.vue"
 import Register from "../pages/Register.vue"
 import Login from "../pages/Login.vue"
 import Mail from "../pages/Mail.vue"
+import Record from "../pages/Record.vue"
 import Detail from "../components/Detail.vue"
 import UploadAvatar from "../pages/UploadAvatar.vue"
-import Record from "../pages/record.vue"
 
 export default new VueRouter({
-    routes:[
+    routes: [
         {
-            path:'/',
-            component:Menu,
+            path: '/',
+            component: Menu,
         },
         {
-            path:'/delete',
-            component:Delete,
+            path: '/delete',
+            component: Delete,
         },
         {
-            path:'/mail',
-            component:Mail,
+            path: '/Mail',
+            component: Mail,
         },
         {
-            path:'/Login',
-            component:Login,
+            path: '/Login',
+            component: Login,
         },
         {
-            path:'/register',
-            component:Register,
+            path: '/register',
+            component: Register,
         },
         {
-            path:'/detail',
-            component:Detail,
+            path: '/detail',
+            component: Detail,
         },
         {
-            path:'/upload',
-            component:UploadAvatar
+            path: '/record',
+            component: Record
         },
         {
-            path:'/record',
-            component:Record
+            path: '/upload',
+            component: UploadAvatar
         },
+
     ]
 })
