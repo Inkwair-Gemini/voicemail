@@ -29,10 +29,10 @@
         <label class="line-label">留言功能</label>
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
           <input type="radio" class="btn-check" name="switch" id="switch1" autocomplete="off" checked>
-          <label class="btn btn-outline-primary" for="switch1"><span class="fontspan">开</span></label>
+          <label class="btn btn-outline-primary" for="switch1" @click="openRecord"><span class="fontspan">开</span></label>
 
           <input type="radio" class="btn-check" name="switch" id="switch2" autocomplete="off">
-          <label class="btn btn-outline-primary" for="switch2"><span class="fontspan">关</span></label>
+          <label class="btn btn-outline-primary" for="switch2" @click="closeRecord"><span class="fontspan">关</span></label>
         </div>
       </div>
       <div class="second hovergrey" @click="toMail">
@@ -131,9 +131,16 @@
       },
       toLogin(){
         electronAPI.openLoginWindow("login")
-      }
+      },
+      openRecord(){
+        electronAPI.openRecordWindow("record")
+      },
+      closeRecord(){
+        electronAPI.send("closeRecord")
+      },
     },
     mounted(){
+      electronAPI.openRecordWindow("record")
       electronAPI.receive("getLoginInfo",(loginUser)=>{
           localStorage.setItem('user',JSON.stringify(loginUser))
           this.isLogin=true

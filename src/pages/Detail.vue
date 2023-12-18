@@ -54,6 +54,7 @@ export default {
       title: "浙江工业大学校歌",
       text: " 烛光烛光，在西子湖畔点燃；心血浇灌，现代化的希望；莘莘学子，巍巍栋梁；扎根在科学沃土，茁壮成长；激荡激荡，着古运河的情怀；沐浴改革，开放之光；工程师的摇篮，新技术的殿堂；紧连着钱江长江，太平洋；任重道远，创建一流；浙江工业大学；开拓奋进，迎接新世纪的挑战；新世纪的挑战；啊啊啊……奔向明天的辉煌；啊啊啊……奔向明天的辉煌！",
       progress: 0,
+      displayedText:'',
       music: "",
       //   musicUrl: require(this.music + ".mp3"),
       musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),

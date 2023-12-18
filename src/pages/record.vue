@@ -25,6 +25,7 @@ export default {
       isRecording: false,
       recorderName: JSON.parse(localStorage.getItem("user")).username,
       audioChunks: [],
+      mediaRecorder:'',
       recordingStartTime: null,
       recordingEndTime: null,
     };

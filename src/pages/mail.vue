@@ -22,7 +22,7 @@
         >
           <!-- <audio ref="audio" style="width: 100px"></audio> -->
           <el-table-column :min-width="10"></el-table-column>
-          <el-table-column label="录制时间" prop="timestamp" width="80">
+          <el-table-column label="录制时间" prop="timestamp" width="90">
           </el-table-column>
           <el-table-column label="">
             <template slot-scope="scope">
@@ -37,38 +37,21 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="right" width="80">
+          <el-table-column align="right" width="140">
+            <template slot="header" slot-scope={}>
+              <el-input class="search" v-model="search" size="mini" placeholder="关键字搜索"/>
+              <i class="el-icon-search"/>
+            </template>
             <template slot-scope="scope">
-              <el-button
-                class="play custom-large-button primary-button-style"
+              <div class="buttons">
+              <el-button class="vediobutton"
                 type="primary"
-                @click.stop="handlePlay(scope.$index, scope.row)"
-              >
-                <a-icon
-                  :type="isPlaying[scope.$index] ? 'pause' : 'caret-right'"
-                />
-              </el-button>
-            </template>
-          </el-table-column>
-          <el-table-column align="right" width="80">
-            <template slot="header" slot-scope="{}">
-              <el-input
-                class="search"
-                v-model="search"
                 size="mini"
-                placeholder="关键字搜索 . ."
-                style="width: 30px"
-              />
-              <i class="el-icon-search" />
-            </template>
-            <template slot-scope="scope">
-              <el-button
-                class="delete"
-                type="danger"
-                icon="el-icon-delete"
-                @click.stop="handleDelete(scope.$index)"
-              >
+                @click.stop="handlePlay(scope.$index, scope.row)">
+                <icon id="play" :class= "isPlaying[scope.$index] ? 'el-icon-video-pause' : 'el-icon-video-play'" />
               </el-button>
+              <el-button class="delete" type="danger" icon="el-icon-delete" size="mini" @click.stop="handleDelete(scope.$index)"/>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -328,7 +311,7 @@ export default {
 .search {
   position: relative;
   left: -16px;
-  width: 110px;
+  width: 100px;
 }
 .play {
   position: relative;
@@ -383,19 +366,24 @@ export default {
   border: none; /* 移除按钮的边框 */
   cursor: pointer; /* 鼠标指针样式，使按钮看起来可点击 */
 }
-
-.primary-button-style {
-  background: white; /* 将默认背景颜色改为白色 */
-  color: #646466; /* 文本颜色，这里使用了原先的蓝色 */
-  border-color: #2979ff;
+.buttons{
+  position: relative;
+  left: -10px;
 }
-
-.primary-button-style:hover {
-  background: #edf3ff; /* 鼠标悬停时的背景颜色 */
-  color: #3e95ff;
+.vediobutton{
+  position: relative;
+  top: 4px;
+  width:45px;
+  height: 27.5px;
+  font-size: 20px;
 }
-
-.delete {
-  border: none;
+.delete{
+  position: relative;
+  top: -3px;
+}
+#play{
+  position: relative;
+  top: -3.5px;
+  left: -3px;
 }
 </style>

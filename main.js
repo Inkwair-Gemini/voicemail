@@ -9,6 +9,7 @@ let mailWindow = null;
 let loginWindow = null;
 let detailWindow = null;
 let uploadWindow = null;
+let recordWindow = null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -78,40 +79,45 @@ function openNewWindow(newWindow, route, Width, Height) {
         preload: path.join(__dirname, 'preload.js'),
       }
     });
+      // 加载指定路由内容
+    newWindow.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
+
+    // 在窗口关闭时重置窗口变量
+    newWindow.on('closed', () => {
+      newWindow = null;
+    });
+
+    return newWindow
   }
-
-  // 加载指定路由内容
-  newWindow.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
-
-  // 在窗口关闭时重置窗口变量
-  newWindow.on('closed', () => {
-    newWindow = null;
-  });
 }
 ipcMain.on('open-delete-window', (event, route) => {
   mainWindow.hide();
-  openNewWindow(deleteWindow, route, 506, 726)
+  deleteWindow = openNewWindow(deleteWindow, route, 506, 726)
 });
 
 ipcMain.on('open-mail-window', (event, route) => {
   mainWindow.hide();
-  openNewWindow(mailWindow, route, 506, 726)
+  mailWindow = openNewWindow(mailWindow, route, 506, 726)
 });
 
 ipcMain.on('open-login-window', (event, route) => {
-  openNewWindow(loginWindow, route, 406, 326)
+  loginWindow = openNewWindow(loginWindow, route, 406, 326)
 });
 
 ipcMain.on('open-register-window', (event, route) => {
-  openNewWindow(loginWindow, route, 406, 326)
+  recordWindow = openNewWindow(loginWindow, route, 406, 326)
 });
 
 ipcMain.on('open-detail-window', (event, route, timestamp) => {
-  openNewWindow(detailWindow, route, 506, 726,timestamp)
+  deleteWindow = openNewWindow(detailWindow, route, 506, 726,timestamp)
 });
 
 ipcMain.on('open-upload-window', (event, route) => {
-  openNewWindow(uploadWindow, route, 400, 200)
+  uploadWindow = openNewWindow(uploadWindow, route, 400, 200)
+});
+
+ipcMain.on('open-record-window', (event, route) => {
+  recordWindow = openNewWindow(recordWindow, route, 1000, 1000)
 });
 
 ipcMain.on('login', (event,info) => {
@@ -122,6 +128,12 @@ ipcMain.on('avatar', (event,info) => {
 });
 ipcMain.on('deleteNumber', (event,info) => {
   mainWindow.webContents.send("getDeleteNumber",info)
+});
+ipcMain.on("closeRecord", (event) => {
+  if (recordWindow) {
+    recordWindow.close()
+    recordWindow = null; // 如果recordWindow存在，则关闭它
+  }
 });
 
 app.on('ready', createWindow)

@@ -6,7 +6,7 @@ import Register from "../pages/Register.vue"
 import Login from "../pages/Login.vue"
 import Mail from "../pages/Mail.vue"
 import Record from "../pages/Record.vue"
-import Detail from "../components/Detail.vue"
+import Detail from "../pages/Detail.vue"
 import UploadAvatar from "../pages/UploadAvatar.vue"
 
 export default new VueRouter({
