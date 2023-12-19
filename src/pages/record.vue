@@ -105,7 +105,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   display: flex;
   justify-content: center;
@@ -113,10 +113,13 @@ export default {
   height: 100vh; /* 使容器铺满整个视口高度 */
 }
 .main {
-  width: 400px;
-  height: 300px;
+  width: 54px;
+  height: 43px;
+  min-width: 54px;
+  min-height: 43px;
   border-radius: 2px; /* 设置圆角边框 */
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* 添加阴影效果 */
+  overflow: hidden;
 }
 .header {
   width: 500px;

@@ -117,7 +117,32 @@ ipcMain.on('open-upload-window', (event, route) => {
 });
 
 ipcMain.on('open-record-window', (event, route) => {
-  recordWindow = openNewWindow(recordWindow, route, 1000, 1000)
+  if (recordWindow === null) {
+    recordWindow = new BrowserWindow({
+      width: 56,
+      height: 44,
+      autoHideMenuBar:true,
+      resizable: false, // 禁止窗口缩放
+      maximizable: false, // 禁止最大化
+      draggable: true,
+      frame: false,
+      alwaysOnTop: true,
+      x:1350,
+      y:650,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: true,
+        preload: path.join(__dirname, 'preload.js'),
+      }
+    });
+      // 加载指定路由内容
+      recordWindow.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
+
+    // 在窗口关闭时重置窗口变量
+    recordWindow.on('closed', () => {
+      recordWindow = null;
+    });
+  }
 });
 
 ipcMain.on('login', (event,info) => {
