@@ -40,13 +40,13 @@ import axios from 'axios';
                 close()
             },
             userIsExits(username){
-              // axios.get(`http://localhost:8080/user/selectUserByUsername?username=${username}`).then(()=>{
-              //   Response=>{
-              //     return Response.data
-              //   },
-              //   error=>{console.log(error.message)}
-              // })
-              return false;
+              axios.get(`http://localhost:5000/user/selectUserByUsername?username=${username}`).then(()=>{
+                Response=>{
+                  return Response.data.result
+                },
+                error=>{console.log(error.message)}
+              })
+
             },
             submit(){
                 if(this.userIsExits(this.registerUser.username)){
@@ -54,18 +54,18 @@ import axios from 'axios';
                 }else if(this.registerUser.password!==this.registerUser.repassword){
                   alert("两次输入的密码不一致！")
                 }else{
-                  // axios.post(`http://localhost:8080/user/addUser`,this.registerUser).then(()=>{
-                  //   Response=>{
-                  //     if(Response.data.result===true){
-                  //       alert("注册成功！")
-                  //       electronAPI.openLoginWindow("login")
-                  //       close()
-                  //     }else{
-                  //       alert("注册失败:"+Response.data.reason)
-                  //     }
-                  //   },
-                  //   error=>{console.log(error.message)}
-                  // })
+                  axios.post(`http://localhost:5000/user/addUser`,this.registerUser).then(()=>{
+                    Response=>{
+                      if(Response.data.result===true){
+                        alert("注册成功！")
+                        electronAPI.openLoginWindow("login")
+                        close()
+                      }else{
+                        alert("注册失败:"+Response.data.reason)
+                      }
+                    },
+                    error=>{console.log(error.message)}
+                  })
                 }
             }
         },

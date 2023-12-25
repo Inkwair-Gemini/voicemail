@@ -107,13 +107,12 @@
           }
       },
       getDeleteNum(username){
-        //   axios.get(`http://localhost:8080/delete/getListByUsername?username=${username}`).then(()=>{
-        //     Response=>{
-        //       return Response.data.deleteList.length
-        //     },
-        //     error=>{console.log(error.message)}
-        //   })
-        return 100
+          axios.get(`http://localhost:5000/delete/getListByUsername?username=${username}`).then(()=>{
+            Response=>{
+              return Response.data.deleteList.length
+            },
+            error=>{console.log(error.message)}
+          })
       },
       toDelete(){
         if(this.isLogin){

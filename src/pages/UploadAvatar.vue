@@ -15,6 +15,7 @@
 </template>
 
 <script scoped>
+import axios from 'axios'
 export default {
     naem:"UploadAvatar",
     data(){
@@ -29,13 +30,15 @@ export default {
         },
         avatarSubmit(){
             electronAPI.send('avatar',this.avatarform.url)
-            localStorage.setItem("user",JSON.stringify(this.user))
-            // axios.post('http://localhost:8080/user/updateUser',this.user).then(
-            // response=>{
-            //     console.log(response.data)
-            // },
-            // error=>{console.log(error.message)}
-            // )
+            let user = JSON.parse(localStorage.getItem('user'))
+            user.avatarUrl=this.avatarform.url
+            localStorage.setItem("user",JSON.stringify(user))
+            axios.post('http://localhost:5000/user/updateUser',user).then(
+            response=>{
+                console.log(response.data.result)
+            },
+            error=>{console.log(error.message)}
+            )
             close()
         },
     }
@@ -43,7 +46,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .container{
     display: flex !important;
@@ -52,10 +55,11 @@ export default {
 }
 .dialog-footer{
     position: relative;
+    top: 50px;
     left: 50px;
 }
 .form{
     position: relative;
-    top: -20px;
+    top: 40px;
 }
 </style>

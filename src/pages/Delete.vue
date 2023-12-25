@@ -59,20 +59,20 @@ import axios from 'axios'
         },
         methods:{
           handleRecover(id){
-            // const username=this.getUsername
-            // axios.get(`http://localhost:8080/delete/recoverById?username=${username}&id=${id}`).then(()=>{
-            //   Response=>{console.log(Response.data)},
-            //   error=>{console.log(error.message)}
-            // })
+            const username=this.getUsername
+            axios.get(`http://localhost:5000/delete/recoverById?username=${username}&id=${id}`).then(()=>{
+              Response=>{console.log(Response.data)},
+              error=>{console.log(error.message)}
+            })
             this.deleteList=this.deleteList.filter(p=>p.id!==id)
             electronAPI.send("getDeleteNumber",this.deleteList.length)
           },
           handleDelete(id){
-            // const username=this.getUsername
-            // axios.get(`http://localhost:8080/delete/deleteById?username=${username}&id=${id}`).then(()=>{
-            //   Response=>{console.log(Response.data)},
-            //   error=>{console.log(error.message)}
-            // })
+            const username=this.getUsername
+            axios.get(`http://localhost:5000/delete/deleteById?username=${username}&id=${id}`).then(()=>{
+              Response=>{console.log(Response.data)},
+              error=>{console.log(error.message)}
+            })
             this.deleteList=this.deleteList.filter(p=>p.id!==id)
             electronAPI.send("deleteNumber",this.deleteList.length)
           },
@@ -81,16 +81,16 @@ import axios from 'axios'
           }
         },
         mounted(){
-        //   const username=this.getUsername
-        //   if(!username){
-        //     alert("未登录！")
-        //   }
-        //   axios.get(`http://localhost:8080/delete/getListByUsername?username=${username}`).then(()=>{
-        //     Response=>{
-        //       this.deleteList=Response.data.deleteList
-        //     },
-        //     error=>{console.log(error.message)}
-        //   })
+          const username=this.getUsername
+          if(!username){
+            alert("未登录！")
+          }
+          axios.get(`http://localhost:5000/delete/getListByUsername?username=${username}`).then(()=>{
+            Response=>{
+              this.deleteList=Response.data.deleteList
+            },
+            error=>{console.log(error.message)}
+          })
         }
     }
 </script>

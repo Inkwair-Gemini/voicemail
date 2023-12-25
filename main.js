@@ -10,6 +10,7 @@ let loginWindow = null;
 let detailWindow = null;
 let uploadWindow = null;
 let recordWindow = null;
+let registerWindow = null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -82,51 +83,37 @@ function openNewWindow(newWindow, route, Width, Height) {
       // 加载指定路由内容
     newWindow.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
 
+    newWindow.on('closed', () => {
+      newWindow = null;
+    });
+
     return newWindow
   }
 }
 ipcMain.on('open-delete-window', (event, route) => {
   mainWindow.hide();
   deleteWindow = openNewWindow(deleteWindow, route, 506, 726)
-  deleteWindow.on('closed', () => {
-    deleteWindow = null;
-  });
 });
 
 ipcMain.on('open-mail-window', (event, route) => {
   mainWindow.hide();
   mailWindow = openNewWindow(mailWindow, route, 506, 726)
-  mailWindow.on('closed', () => {
-    mailWindow = null;
-  });
 });
 
 ipcMain.on('open-login-window', (event, route) => {
   loginWindow = openNewWindow(loginWindow, route, 406, 326)
-  loginWindow.on('closed', () => {
-    loginWindow = null;
-  });
 });
 
 ipcMain.on('open-register-window', (event, route) => {
-  recordWindow = openNewWindow(loginWindow, route, 406, 326)
-  recordWindow.on('closed', () => {
-    drecordWindow = null;
-  });
+  registerWindow = openNewWindow(registerWindow, route, 406, 326)
 });
 
 ipcMain.on('open-detail-window', (event, route, timestamp) => {
   detailWindow = openNewWindow(detailWindow, route, 506, 726,timestamp)
-  detailWindow.on('closed', () => {
-    detailWindow = null;
-  });
 });
 
 ipcMain.on('open-upload-window', (event, route) => {
   uploadWindow = openNewWindow(uploadWindow, route, 400, 200)
-  uploadWindow.on('closed', () => {
-    uploadWindow = null;
-  });
 });
 
 ipcMain.on('open-record-window', (event, route) => {
