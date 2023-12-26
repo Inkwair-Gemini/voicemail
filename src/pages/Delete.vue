@@ -37,42 +37,30 @@ import axios from 'axios'
         name:"Delete",
         data(){
             return{
-                deleteList:[
-                    {id:1,title:"title1",time:"2023-12-13",data:"testtetstetsetsttesttteste"},
-                    {id:2,title:"会议主要议题",time:"2023-8-1",data:"传达集团于 10 月 7 日召开的经济工作会议精神，从集团各公司反映的情况来看，普遍存在资金紧张、 生产任务不足的问题，但公司与其他公司相比，面临的最大困难是没有资质。 集团要求，在市场开发方面要加大开发力度，特别是要加大滨海新区等具有潜力的市场和外埠市场的开发力度，将地域性市场变为全国性市场。同时，要做好地铁一号线、快速路等项目的结算准备， 列出合同值、期望值以及材差等清单；在资金方面，要认真对待施工 产值低与成本过高、当前施工产值完成量与年初制定的计划差距过大、亏损严重等几个关键问题，要把各项管理工作，特别是项目管理做细。要提前着手准备年底资金问题，要利用四季度认真运作。 XXX总经理要求，要正确认识现实，保持一个坚强的领导班 子是战胜困难的唯一出路；要立足自身，找出解决困难的招数；要 保持政令畅通，管理工作的覆盖面要全；要抓好稳定工作；要做好 过年关的准备。"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                    {id:3,title:"老王的停车记录",time:"2023-2-27",data:"testtetstetsetsttesttteste"},
-                ],
+                deleteList:[],
                 search: ''
             }
         },
         methods:{
           handleRecover(id){
-            const username=this.getUsername
-            axios.get(`http://localhost:5000/delete/recoverById?username=${username}&id=${id}`).then(()=>{
-              Response=>{console.log(Response.data)},
-              error=>{console.log(error.message)}
-            })
+            axios.get(`http://localhost:5000/delete/recoverById?id=${id}`).then(
+              Response=>{
+                console.log(Response.data)
+              }).catch(
+              error => {
+                console.log(error.message);
+              })
             this.deleteList=this.deleteList.filter(p=>p.id!==id)
-            electronAPI.send("getDeleteNumber",this.deleteList.length)
+            electronAPI.send("deleteNumber",this.deleteList.length)
           },
           handleDelete(id){
-            const username=this.getUsername
-            axios.get(`http://localhost:5000/delete/deleteById?username=${username}&id=${id}`).then(()=>{
-              Response=>{console.log(Response.data)},
-              error=>{console.log(error.message)}
-            })
+            axios.get(`http://localhost:5000/delete/deleteById?id=${id}`).then(
+              Response=>{
+                console.log(Response.data)
+              }).catch(
+              error => {
+                console.log(error.message);
+              })
             this.deleteList=this.deleteList.filter(p=>p.id!==id)
             electronAPI.send("deleteNumber",this.deleteList.length)
           },
@@ -81,16 +69,18 @@ import axios from 'axios'
           }
         },
         mounted(){
-          const username=this.getUsername
+          const username = this.getUsername()
           if(!username){
             alert("未登录！")
+          }else{
+            axios.get(`http://localhost:5000/delete/getListByUsername?username=${username}`).then(
+                response => {
+                  this.deleteList = response.data.deleteList;
+                }).catch(
+                error => {
+                  console.log(error.message);
+                })
           }
-          axios.get(`http://localhost:5000/delete/getListByUsername?username=${username}`).then(()=>{
-            Response=>{
-              this.deleteList=Response.data.deleteList
-            },
-            error=>{console.log(error.message)}
-          })
         }
     }
 </script>

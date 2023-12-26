@@ -35,11 +35,12 @@ export default {
             localStorage.setItem("user",JSON.stringify(user))
             console.log(user)
             axios.post('http://localhost:5000/user/updateUser',user).then(
-            response=>{
-                console.log(response.data.result)
-            },
-            error=>{console.log(error.message)}
-            )
+                response=>{
+                    console.log(response.data.result)
+                }).catch(
+                error=>{    
+                    console.log(error.message)
+                })
             close()
         },
     }

@@ -48,7 +48,7 @@
                 type="primary"
                 size="mini"
                 @click.stop="handlePlay(scope.$index, scope.row)">
-                <icon id="play" :class= "isPlaying[scope.$index] ? 'el-icon-video-pause' : 'el-icon-video-play'" />
+                <i id="play" :class= "isPlaying[scope.$index] ? 'el-icon-video-pause' : 'el-icon-video-play'" />
               </el-button>
               <el-button class="delete" type="danger" icon="el-icon-delete" size="mini" @click.stop="handleDelete(scope.$index)"/>
               </div>

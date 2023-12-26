@@ -106,14 +106,6 @@
               alert("未登录,请先登录")
           }
       },
-      getDeleteNum(username){
-          axios.get(`http://localhost:5000/delete/getListByUsername?username=${username}`).then(()=>{
-            Response=>{
-              return Response.data.deleteList.length
-            },
-            error=>{console.log(error.message)}
-          })
-      },
       toDelete(){
         if(this.isLogin){
           electronAPI.openDeleteWindow("delete")
@@ -160,7 +152,13 @@
         this.user.id=loginUser.id
         this.user.username=loginUser.username
         this.user.avatarUrl=loginUser.avatarUrl
-        this.deleteNumber=this.getDeleteNum(loginUser.username)
+        axios.get(`http://localhost:5000/delete/getListByUsername?username=${loginUser.username}`).then(
+          Response=>{
+            this.deleteNumber=Response.data.deleteList.length
+          }).catch(
+          error=>{
+            console.log(error.message)
+          })
       }else{
         this.user.username="未登录"
         this.user.avatarUrl="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"

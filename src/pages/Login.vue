@@ -47,9 +47,10 @@ import axios from 'axios';
                             console.log(response.data)
                             alert('用户名或密码错误！')
                         }
-                    },
-                    error=>{console.log(error.message)}
-                )
+                    }).catch(
+                    error=>{
+                      console.log(error.message)
+                    })
             },
             register(){
                 close()

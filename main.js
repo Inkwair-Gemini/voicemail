@@ -134,7 +134,7 @@ ipcMain.on('open-mail-window', (event, route) => {
 
 ipcMain.on('open-login-window', (event, route) => {
   if(loginWindow === null || loginWindow.isDestroyed()){
-    loginWindow = openNewWindow(loginWindow, route, 406, 326)
+    loginWindow = openNewWindow( route, 406, 326)
   }
   else{
     loginWindow.focus()
@@ -143,7 +143,7 @@ ipcMain.on('open-login-window', (event, route) => {
 
 ipcMain.on('open-register-window', (event, route) => {
   if(registerWindow === null || registerWindow.isDestroyed()){
-    registerWindow = openNewWindow(registerWindow, route, 406, 326)
+    registerWindow = openNewWindow( route, 406, 326)
   }
   else{
     registerWindow.focus()
@@ -152,7 +152,7 @@ ipcMain.on('open-register-window', (event, route) => {
 
 ipcMain.on('open-detail-window', (event, route, timestamp) => {
   if(detailWindow === null || detailWindow.isDestroyed()){
-    detailWindow = openNewWindow(detailWindow, route, 506, 726,timestamp)
+    detailWindow = openNewWindow(route, 506, 726,timestamp)
   }
   else{
     detailWindow.focus()
@@ -161,7 +161,7 @@ ipcMain.on('open-detail-window', (event, route, timestamp) => {
 
 ipcMain.on('open-upload-window', (event, route) => {
   if(uploadWindow === null || uploadWindow.isDestroyed()){
-    uploadWindow = openNewWindow(uploadWindow, route, 400, 200)
+    uploadWindow = openNewWindow(route, 400, 200)
   }
   else{
     uploadWindow.focus()

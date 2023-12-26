@@ -40,13 +40,13 @@ import axios from 'axios';
                 close()
             },
             userIsExits(username){
-              const un = {"username":username}
-              axios.post("http://localhost:5000/user/selectUserByUsername",un).then(
+              axios.get(`http://localhost:5000/user/selectUserByUsername?username=${username}`).then(
                 response=>{
                   return response.data.result
-                },
-                error=>{console.log(error.message)}
-              )
+                }).catch(
+                error=>{
+                  console.log(error.message)
+                })
             },
             submit(){
                 if(this.userIsExits(this.registerUser.username)){
@@ -63,9 +63,10 @@ import axios from 'axios';
                       }else{
                         alert("注册失败:"+Response.data.reason)
                       }
-                    },
-                    error=>{console.log(error.message)}
-                  )
+                    }).catch(
+                    error=>{
+                      console.log(error.message)
+                    })
                 }
             }
         },
