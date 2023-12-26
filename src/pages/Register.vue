@@ -40,13 +40,13 @@ import axios from 'axios';
                 close()
             },
             userIsExits(username){
-              axios.get(`http://localhost:5000/user/selectUserByUsername?username=${username}`).then(()=>{
-                Response=>{
-                  return Response.data.result
+              const un = {"username":username}
+              axios.post("http://localhost:5000/user/selectUserByUsername",un).then(
+                response=>{
+                  return response.data.result
                 },
                 error=>{console.log(error.message)}
-              })
-
+              )
             },
             submit(){
                 if(this.userIsExits(this.registerUser.username)){
@@ -54,7 +54,7 @@ import axios from 'axios';
                 }else if(this.registerUser.password!==this.registerUser.repassword){
                   alert("两次输入的密码不一致！")
                 }else{
-                  axios.post(`http://localhost:5000/user/addUser`,this.registerUser).then(()=>{
+                  axios.post(`http://localhost:5000/user/addUser`,this.registerUser).then(
                     Response=>{
                       if(Response.data.result===true){
                         alert("注册成功！")
@@ -65,7 +65,7 @@ import axios from 'axios';
                       }
                     },
                     error=>{console.log(error.message)}
-                  })
+                  )
                 }
             }
         },

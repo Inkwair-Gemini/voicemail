@@ -50,7 +50,6 @@ function setTray() {
   appTray = new Tray('./public/Mail II.png');
   appTray.setToolTip('右键打开设置');
   appTray.on('right-click', () => {
-    // const display = screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
     const windowSize = mainWindow.getSize();
     const cursorPosition = screen.getCursorScreenPoint();
     const x = cursorPosition.x - windowSize[0];
@@ -65,14 +64,12 @@ ipcMain.on('open-tray', () => {
   setTray();
 });
 
-function openNewWindow(newWindow, route, Width, Height) {
-  // 创建新窗口
-  if (newWindow === null) {
-    newWindow = new BrowserWindow({
+function openNewWindow(route, Width, Height) {
+    windowInstance = new BrowserWindow({
       width: Width,
       height: Height,
       autoHideMenuBar:true,
-      resizable: false, // 禁止窗口缩放
+      // resizable: false, // 禁止窗口缩放
       maximizable: false, // 禁止最大化
       webPreferences: {
         nodeIntegration: true,
@@ -80,40 +77,95 @@ function openNewWindow(newWindow, route, Width, Height) {
         preload: path.join(__dirname, 'preload.js'),
       }
     });
-      // 加载指定路由内容
-    newWindow.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
 
-    newWindow.on('closed', () => {
-      newWindow = null;
+    // 加载指定路由内容
+    windowInstance.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
+
+    let needsFocusFix = false;
+    let triggeringProgrammaticBlur = false;
+
+    windowInstance.on('blur', (event) => {
+      if(!triggeringProgrammaticBlur) {
+        needsFocusFix = true;
+      }
+    })
+
+    windowInstance.on('focus', (event) => {
+      if(needsFocusFix) {
+        needsFocusFix = false;
+        triggeringProgrammaticBlur = true;
+        setTimeout(function () {
+          windowInstance.blur();
+         windowInstance.focus();
+          setTimeout(function () {
+            triggeringProgrammaticBlur = false;
+          }, 100);
+        }, 100);
+      }
+    })
+
+    windowInstance.on('closed', () => {
+      // 在窗口对象被关闭时，取消订阅所有与该窗口相关的事件
+      windowInstance.removeAllListeners();
+      windowInstance = null;
     });
 
-    return newWindow
-  }
+    return windowInstance
 }
 ipcMain.on('open-delete-window', (event, route) => {
   mainWindow.hide();
-  deleteWindow = openNewWindow(deleteWindow, route, 506, 726)
+  if(deleteWindow === null || deleteWindow.isDestroyed()){
+    deleteWindow = openNewWindow(route, 506, 726)
+  }
+  else{
+    deleteWindow.focus()
+  }
 });
 
 ipcMain.on('open-mail-window', (event, route) => {
   mainWindow.hide();
-  mailWindow = openNewWindow(mailWindow, route, 506, 726)
+  if(mailWindow === null || mailWindow.isDestroyed()){
+    mailWindow = openNewWindow(route, 506, 726)
+  }
+  else{
+    mailWindow.focus()
+  }
 });
 
 ipcMain.on('open-login-window', (event, route) => {
-  loginWindow = openNewWindow(loginWindow, route, 406, 326)
+  if(loginWindow === null || loginWindow.isDestroyed()){
+    loginWindow = openNewWindow(loginWindow, route, 406, 326)
+  }
+  else{
+    loginWindow.focus()
+  }
 });
 
 ipcMain.on('open-register-window', (event, route) => {
-  registerWindow = openNewWindow(registerWindow, route, 406, 326)
+  if(registerWindow === null || registerWindow.isDestroyed()){
+    registerWindow = openNewWindow(registerWindow, route, 406, 326)
+  }
+  else{
+    registerWindow.focus()
+  }
 });
 
 ipcMain.on('open-detail-window', (event, route, timestamp) => {
-  detailWindow = openNewWindow(detailWindow, route, 506, 726,timestamp)
+  if(detailWindow === null || detailWindow.isDestroyed()){
+    detailWindow = openNewWindow(detailWindow, route, 506, 726,timestamp)
+  }
+  else{
+    detailWindow.focus()
+  }
 });
 
 ipcMain.on('open-upload-window', (event, route) => {
-  uploadWindow = openNewWindow(uploadWindow, route, 400, 200)
+  if(uploadWindow === null || uploadWindow.isDestroyed()){
+    uploadWindow = openNewWindow(uploadWindow, route, 400, 200)
+  }
+  else{
+    uploadWindow.focus()
+  }
 });
 
 ipcMain.on('open-record-window', (event, route) => {

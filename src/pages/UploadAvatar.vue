@@ -33,6 +33,7 @@ export default {
             let user = JSON.parse(localStorage.getItem('user'))
             user.avatarUrl=this.avatarform.url
             localStorage.setItem("user",JSON.stringify(user))
+            console.log(user)
             axios.post('http://localhost:5000/user/updateUser',user).then(
             response=>{
                 console.log(response.data.result)
