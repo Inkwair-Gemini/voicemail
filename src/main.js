@@ -9,6 +9,9 @@ import 'ant-design-vue/dist/antd.css';
 import VueRouter from 'vue-router'
 //引入路由器
 import router from './router'
+//引入国际化
+import VueI18n from 'vue-i18n'
+Vue.use(VueI18n)
 Vue.use(ElementUI);
 Vue.use(VueRouter)
 Vue.use(Antd);
