@@ -69,7 +69,7 @@ function openNewWindow(route, Width, Height) {
       width: Width,
       height: Height,
       autoHideMenuBar:true,
-      // resizable: false, // 禁止窗口缩放
+      resizable: false, // 禁止窗口缩放
       maximizable: false, // 禁止最大化
       webPreferences: {
         nodeIntegration: true,

@@ -311,7 +311,7 @@ export default {
   position: relative;
   font-size: 22px;
   top: 23px;
-  right: 15px;
+  right: 30px;
   float: right;
 }
 .deleteValue {
@@ -324,16 +324,16 @@ export default {
 }
 .btn-group {
   position: relative;
-  top: 19px;
+  top: 23px;
   width: 22px;
   height: 28px;
-  right: 70px;
+  right: 90px;
   float: right;
 }
 .fontspan {
   position: relative;
   left: 0px;
-  top: -1px;
+  top: -5px;
 }
 .quiticon {
   width: 22px;

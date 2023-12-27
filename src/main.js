@@ -8,11 +8,9 @@ import 'ant-design-vue/dist/antd.css';
 import i18n from './lang'
 import VueRouter from 'vue-router' //引入路由
 import router from './router' //引入路由器
-import VueI18n from 'vue-i18n' //引入国际化
 import Vuex from 'vuex' //引入VueX
 
 Vue.use(Vuex)
-Vue.use(VueI18n)
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Antd)

@@ -2,12 +2,12 @@
 export default {
     menu: {
         record: 'Record',
-        on: 'On',
-        off: 'Off',
+        on: 'ON',
+        off: 'OFF',
         mail: 'Mailbox',
         language: 'Language',
-        Chinese: 'zh',
-        English: 'en',
+        Chinese: 'ZH',
+        English: 'EN',
         delete: 'Recently Deleted',
         quit: 'Quit',
         quitConfirm: 'Are you sure you want to quit the program?',
