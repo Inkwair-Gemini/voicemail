@@ -3,7 +3,7 @@
     <div class="main">
         <div class="header">
             <div class="header2">
-                <label class="headerlabel">最近删除</label>   
+                <label class="headerlabel">{{$t('delete.mainTitle')}}</label>   
             </div>
         </div>
         <el-table :data="deleteList.filter(data => !search || data.title.toLowerCase().includes(search.toLowerCase()))" style="width: 100%" height="620">
@@ -12,11 +12,11 @@
                 <span class="content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{props.row.data}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="日期" prop="time"></el-table-column>
-            <el-table-column label="标题" prop="title"></el-table-column>
+            <el-table-column :label="$t('delete.date')" prop="time"></el-table-column>
+            <el-table-column :label="$t('delete.title')" prop="title"></el-table-column>
             <el-table-column align="right">
               <template slot="header" slot-scope={}>
-                <el-input class="search" v-model="search" size="mini" placeholder="关键字搜索 . ."/>
+                <el-input class="search" v-model="search" size="mini" :placeholder="$t('delete.search')"/>
                 <i class="el-icon-search"/>
               </template>
               <template slot-scope="scope">
@@ -71,7 +71,7 @@ import axios from 'axios'
         mounted(){
           const username = this.getUsername()
           if(!username){
-            alert("未登录！")
+            alert(this.$t('delete.notLogined'))
           }else{
             axios.get(`http://localhost:5000/delete/getListByUsername?username=${username}`).then(
                 response => {

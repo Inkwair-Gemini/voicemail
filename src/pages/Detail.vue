@@ -3,7 +3,7 @@
     <div class="main">
       <div class="header">
         <div class="header2">
-          <label class="headerlabel">详情</label>
+          <label class="headerlabel">{{$t('detail.title')}}</label>
         </div>
         <div class="title">
           <label class="headerlabel">{{ title }}</label>

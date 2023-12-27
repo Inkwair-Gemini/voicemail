@@ -3,19 +3,19 @@
     <div class="dialog">
         <!-- 自定义title -->
         <div slot="title" class="header-title">
-            <span>注册</span>
+            <span>{{$t('register.title')}}</span>
         </div>
         <el-form v-model="registerUser" label-width="80px" class="form">
-            <label class="username">用 户 名</label>
+            <label class="username">{{$t('register.username')}}</label>
             <el-input class="input1" v-model="registerUser.username" size="small" placeholder="请输入用户名" autofocus></el-input><br><br>
-            <label class="password">密 码&nbsp;&nbsp;</label>
+            <label class="password">{{$t('register.password')}}&nbsp;&nbsp;</label>
             <el-input class="input2" v-model="registerUser.password" size="small" placeholder="请输入密码" show-password></el-input><br><br>
-            <label class="repassword">确 认 密 码</label>
+            <label class="repassword">{{$t('register.repassword')}}</label>
             <el-input class="input3" v-model="registerUser.repassword" size="small" placeholder="请再次输入密码" show-password></el-input>
         </el-form>
         <span slot="footer" class="dialog-footer">
-            <el-button @click="close">取 消</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
-            <el-button type="primary" @click="submit">注 册</el-button>
+            <el-button @click="close">{{$t('register.cancelButton')}}</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <el-button type="primary" @click="submit">{{$t('register.registerButton')}}</el-button>
         </span>
     </div>
   </div>
@@ -50,18 +50,18 @@ import axios from 'axios';
             },
             submit(){
                 if(this.userIsExits(this.registerUser.username)){
-                  alert("用户名已存在！")
+                  alert(this.$t('register.usernameExists'));
                 }else if(this.registerUser.password!==this.registerUser.repassword){
-                  alert("两次输入的密码不一致！")
+                  alert(this.$t('register.passwordsDoNotMatch'))
                 }else{
                   axios.post(`http://localhost:5000/user/addUser`,this.registerUser).then(
                     Response=>{
                       if(Response.data.result===true){
-                        alert("注册成功！")
+                        alert(this.$t('register.registerSuccess'))
                         electronAPI.openLoginWindow("login")
                         close()
                       }else{
-                        alert("注册失败:"+Response.data.reason)
+                        alert(this.$t('register.registerFailed')+Response.data.reason)
                       }
                     }).catch(
                     error=>{

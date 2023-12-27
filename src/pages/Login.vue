@@ -3,19 +3,19 @@
     <div class="dialog">
         <!-- 自定义title -->
         <div class="header-title">
-            <span>登陆</span>
+            <span>{{$t('login.title')}}</span>
         </div>
         <el-form v-model="loginUser" label-width="80px" class="form">
-            <label>用 户 名</label>
-            <el-input class="input" v-model="loginUser.username" size="small" placeholder="请输入用户名" autofocus></el-input><br><br>
-            <label class="pas">密 码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <el-input class="input" v-model="loginUser.password" size="small" placeholder="请输入密码" show-password></el-input>
+            <label>{{$t('login.username')}}</label>
+            <el-input class="input" v-model="loginUser.username" size="small" :placeholder="$t('login.usernameTips')" autofocus></el-input><br><br>
+            <label class="pas">{{$t('login.password')}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <el-input class="input" v-model="loginUser.password" size="small" :placeholder="$t('login.passwordTips')" show-password></el-input>
         </el-form>
-        <label class="registerName" @click="register">没有账号?</label>
+        <label class="registerName" @click="register">{{$t('login.haveNoAccount')}}</label>
         <br>
         <span class="dialog-footer">
-            <el-button @click="close">取 消</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
-            <el-button type="primary" @click="submit">登 陆</el-button>
+            <el-button @click="close">{{$t('login.cancelButton')}}</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <el-button type="primary" @click="submit">{{$t('login.loginButton')}}</el-button>
         </span>
     </div>
   </div>
@@ -45,7 +45,7 @@ import axios from 'axios';
                             electronAPI.send('login',response.data.result.user)
                         }else{
                             console.log(response.data)
-                            alert('用户名或密码错误！')
+                            alert(this.$t('login.loginFailed'))
                         }
                     }).catch(
                     error=>{

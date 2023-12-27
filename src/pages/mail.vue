@@ -3,7 +3,7 @@
     <div class="main">
       <div class="header">
         <div class="header2">
-          <label class="headerlabel">信箱</label>
+          <label class="headerlabel">{{ $t("mail.title") }}</label>
         </div>
       </div>
       <div>
@@ -22,7 +22,11 @@
         >
           <!-- <audio ref="audio" style="width: 100px"></audio> -->
           <el-table-column :min-width="10"></el-table-column>
-          <el-table-column label="录制时间" prop="timestamp" width="90">
+          <el-table-column
+            :label="$t('mail.duration')"
+            prop="timestamp"
+            width="90"
+          >
           </el-table-column>
           <el-table-column label="">
             <template slot-scope="scope">
@@ -38,19 +42,39 @@
             </template>
           </el-table-column>
           <el-table-column align="right" width="140">
-            <template slot="header" slot-scope={}>
-              <el-input class="search" v-model="search" size="mini" placeholder="关键字搜索"/>
-              <i class="el-icon-search"/>
+            <template slot="header" slot-scope="{}">
+              <el-input
+                class="search"
+                v-model="search"
+                size="mini"
+                :placeholder="$t('mail.search')"
+              />
+              <i class="el-icon-search" />
             </template>
             <template slot-scope="scope">
               <div class="buttons">
-              <el-button class="vediobutton"
-                type="primary"
-                size="mini"
-                @click.stop="handlePlay(scope.$index, scope.row)">
-                <i id="play" :class= "isPlaying[scope.$index] ? 'el-icon-video-pause' : 'el-icon-video-play'" />
-              </el-button>
-              <el-button class="delete" type="danger" icon="el-icon-delete" size="mini" @click.stop="handleDelete(scope.$index)"/>
+                <el-button
+                  class="vediobutton"
+                  type="primary"
+                  size="mini"
+                  @click.stop="handlePlay(scope.$index, scope.row)"
+                >
+                  <i
+                    id="play"
+                    :class="
+                      isPlaying[scope.$index]
+                        ? 'el-icon-video-pause'
+                        : 'el-icon-video-play'
+                    "
+                  />
+                </el-button>
+                <el-button
+                  class="delete"
+                  type="danger"
+                  icon="el-icon-delete"
+                  size="mini"
+                  @click.stop="handleDelete(scope.$index)"
+                />
               </div>
             </template>
           </el-table-column>
@@ -366,22 +390,22 @@ export default {
   border: none; /* 移除按钮的边框 */
   cursor: pointer; /* 鼠标指针样式，使按钮看起来可点击 */
 }
-.buttons{
+.buttons {
   position: relative;
   left: -10px;
 }
-.vediobutton{
+.vediobutton {
   position: relative;
   top: 4px;
-  width:45px;
+  width: 45px;
   height: 27.5px;
   font-size: 20px;
 }
-.delete{
+.delete {
   position: relative;
   top: -3px;
 }
-#play{
+#play {
   position: relative;
   top: -3.5px;
   left: -3px;
