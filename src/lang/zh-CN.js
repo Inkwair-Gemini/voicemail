@@ -61,5 +61,8 @@ export default {
         passwordsDoNotMatch: '两次输入的密码不一致！',
         registerFailed: '注册失败',
         registerSuccess: '注册成功',
+        usernameTips: '请输入用户名',
+        passwordTips: '请输入密码',
+        repasswordTips: '请再次输入密码',
     }
 }

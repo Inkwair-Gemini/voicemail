@@ -43,7 +43,7 @@ export default {
         usernameTips: 'Please input your username',
         passwordTips: 'Please input your password',
         haveNoAccount: 'Have no account?',
-        cancelButton: 'cancel',
+        cancelButton: 'Cancel',
         loginButton: 'Login',
         loginFailed: 'Incorrect username or password!',
     },
@@ -61,5 +61,8 @@ export default {
         passwordsDoNotMatch: 'Passwords do not match!',
         registerFailed: 'Register failed!',
         registerSuccess: 'Register success!',
+        usernameTips: 'Please enter your username',
+        passwordTips: 'Please enter your password',
+        repasswordTips: 'Please enter your repassword',
     },
 }
