@@ -35,7 +35,7 @@
         <el-form-item :label="$t('register.repassword')">
           <el-input
             class="input"
-            v-model="registerUser.password"
+            v-model="registerUser.repassword"
             size="small"
             :placeholder="$t('register.repasswordTips')"
             show-password
@@ -106,6 +106,13 @@ export default {
       }
     },
   },
+  mounted(){
+    electronAPI.receive("changeLang", (lang) => {
+      this.$i18n.locale = lang; // 设置 i18n 的当前语言
+      this.$store.dispatch("setLang", lang); // 触发 Vuex action 更新语言状态
+      console.log(this.$store.state.lang);
+    })
+  }
 };
 </script>
 
@@ -143,7 +150,7 @@ export default {
   top: 30px;
 }
 .input {
-  width: 200px;
+  width: 214px;
 }
 .dialog-footer {
   position: relative;

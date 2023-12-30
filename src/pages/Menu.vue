@@ -89,7 +89,7 @@
             name="lang"
             id="lang1"
             autocomplete="off"
-            :checked="currentLang == 'zh-CN'"
+            :checked="currentLang === 'zh-CN'"
             @change="changeLanguage('zh-CN')"
           />
           <label class="btn btn-outline-primary" for="lang1"
@@ -102,7 +102,7 @@
             name="lang"
             id="lang2"
             autocomplete="off"
-            :checked="currentLang == 'en-US'"
+            :checked="currentLang === 'en-US'"
             @change="changeLanguage('en-US')"
           />
           <label class="btn btn-outline-primary" for="lang2"
@@ -163,27 +163,27 @@ export default {
     },
     uploadAvatar() {
       if (this.isLogin) {
-        electronAPI.openUploadWindow("upload");
+        electronAPI.openUploadWindow("upload",this.currentLang);
       } else {
         alert(this.$t("menu.notLoginedAlert"));
       }
     },
     toDelete() {
       if (this.isLogin) {
-        electronAPI.openDeleteWindow("delete");
+        electronAPI.openDeleteWindow("delete",this.currentLang);
       } else {
         alert(this.$t("menu.notLoginedAlert"));
       }
     },
     toMail() {
       if (this.isLogin) {
-        electronAPI.openMailWindow("mail");
+        electronAPI.openMailWindow("mail",this.currentLang);
       } else {
         alert(this.$t("menu.notLoginedAlert"));
       }
     },
     toLogin() {
-      electronAPI.openLoginWindow("login");
+      electronAPI.openLoginWindow("login",this.currentLang);
     },
     openRecord() {
       electronAPI.openRecordWindow("record");
@@ -195,6 +195,7 @@ export default {
       this.$i18n.locale = lang; // 设置 i18n 的当前语言
       this.$store.dispatch("setLang", lang); // 触发 Vuex action 更新语言状态
       console.log(this.$store.state.lang);
+      electronAPI.send("changeLang",lang) //通知子窗口
 
       //修复未登录标签的bug
       if(!this.isLogin){

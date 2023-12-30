@@ -14,7 +14,7 @@ export default {
         logoutConfirm: 'Are you sure you want to log out?',
         cancel: 'Cancel',
         confirm: 'Confirm',
-        notLogined: 'Not logged in!',
+        notLogined: 'Not logged in',
         notLoginedAlert: 'You haven\'t logged in yet! Please log in first.',
     },
     avatar: {
@@ -42,7 +42,7 @@ export default {
         password: 'Password',
         usernameTips: 'Please input your username',
         passwordTips: 'Please input your password',
-        haveNoAccount: 'Have no account?',
+        haveNoAccount: 'No account?',
         cancelButton: 'Cancel',
         loginButton: 'Login',
         loginFailed: 'Incorrect username or password!',
