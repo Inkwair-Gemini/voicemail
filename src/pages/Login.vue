@@ -35,6 +35,7 @@
           $t("login.loginButton")
         }}</el-button>
       </span>
+      <button @click="test">111</button>
     </div>
   </div>
 </template>
@@ -52,6 +53,9 @@ export default {
     };
   },
   methods: {
+    test(){
+      console.log(this.$i18n.locale)
+    },
     close() {
       close();
     },
@@ -99,7 +103,7 @@ export default {
 }
 .registerName {
   position: relative;
-  top: 173px;
+  top: 153px;
   right: -270px;
 }
 .registerName:hover {
@@ -116,7 +120,7 @@ export default {
 }
 .form {
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
 }

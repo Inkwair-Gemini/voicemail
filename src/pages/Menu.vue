@@ -195,6 +195,11 @@ export default {
       this.$i18n.locale = lang; // 设置 i18n 的当前语言
       this.$store.dispatch("setLang", lang); // 触发 Vuex action 更新语言状态
       console.log(this.$store.state.lang);
+
+      //修复未登录标签的bug
+      if(!this.isLogin){
+        this.user.username=this.$t("menu.notLogined");
+      }
     },
   },
   mounted() {
