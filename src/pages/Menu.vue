@@ -165,21 +165,21 @@ export default {
       if (this.isLogin) {
         electronAPI.openUploadWindow("upload");
       } else {
-        alert(this.$t("menu.notloginedAlert"));
+        alert(this.$t('menu.notLoginedAlert'));
       }
     },
     toDelete() {
       if (this.isLogin) {
         electronAPI.openDeleteWindow("delete");
       } else {
-        alert(this.$t("menu.notloginedAlert"));
+        alert(this.$t('menu.notLoginedAlert'));
       }
     },
     toMail() {
       if (this.isLogin) {
         electronAPI.openMailWindow("mail");
       } else {
-        alert(this.$t("menu.notloginedAlert"));
+        alert(this.$t('menu.notLoginedAlert'));
       }
     },
     toLogin() {
