@@ -165,21 +165,21 @@ export default {
       if (this.isLogin) {
         electronAPI.openUploadWindow("upload");
       } else {
-        alert(this.$t("menu.notloginedAlert"));
+        alert(this.$t("menu.notLoginedAlert"));
       }
     },
     toDelete() {
       if (this.isLogin) {
         electronAPI.openDeleteWindow("delete");
       } else {
-        alert(this.$t("menu.notloginedAlert"));
+        alert(this.$t("menu.notLoginedAlert"));
       }
     },
     toMail() {
       if (this.isLogin) {
         electronAPI.openMailWindow("mail");
       } else {
-        alert(this.$t("menu.notloginedAlert"));
+        alert(this.$t("menu.notLoginedAlert"));
       }
     },
     toLogin() {
@@ -195,6 +195,11 @@ export default {
       this.$i18n.locale = lang; // 设置 i18n 的当前语言
       this.$store.dispatch("setLang", lang); // 触发 Vuex action 更新语言状态
       console.log(this.$store.state.lang);
+
+      //修复未登录标签的bug
+      if(!this.isLogin){
+        this.user.username=this.$t("menu.notLogined");
+      }
     },
   },
   mounted() {
