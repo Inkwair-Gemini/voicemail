@@ -163,10 +163,17 @@ export default {
   methods: {
     async fetchDataFromBackend() {
       try {
-        const response = await axios.get("localhost:5000/addVoice");
+        const requestData = {
+          username: "user1",
+        };
+
+        const response = await axios.post(
+          "http://localhost:5000/user/sendAllVoice",
+          requestData
+        );
         const responseData = response.data;
         const tableData = responseData.voice;
-        const mailList = tableData.map((data, index) => ({
+        const mailList = tableData.map((data) => ({
           progress: 0,
           recorder: data.recorder,
           timestamp: data.timestamp,
@@ -293,7 +300,7 @@ export default {
     },
     async handleDelete(index) {
       try {
-        await axios.post("http://localhost:5000/deleteVoice", { index });
+        await axios.post("http://localhost:5000/deleteVoiceByid", { index });
 
         this.mailList.splice(index, 1);
 

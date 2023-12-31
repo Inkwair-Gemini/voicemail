@@ -74,7 +74,7 @@ export default {
 
               // 使用axios将FormData发送到后端服务器
               axios
-                .post("http://localhost:5000/uploadAudio", formData)
+                .post("http://localhost:5000/user/addVoice", formData)
                 .then((response) => {
                   // 处理上传成功的响应
                   console.log("音频上传成功");
