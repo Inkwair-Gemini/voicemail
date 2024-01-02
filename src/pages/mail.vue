@@ -20,7 +20,6 @@
           stripe
           @row-click="toDetail"
         >
-          <!-- <audio ref="audio" style="width: 100px"></audio> -->
           <el-table-column :min-width="10"></el-table-column>
           <el-table-column
             :label="$t('mail.duration')"
@@ -104,22 +103,7 @@ export default {
   name: "Mail",
   data() {
     return {
-      mailList: [
-        {
-          progress: 0,
-          sender: "Zhang",
-          recorder: "data.recorder",
-          timestamp: "",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-        {
-          progress: 0,
-          sender: "Zhang",
-          recorder: "data.recorder",
-          timestamp: "",
-          musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
-        },
-      ],
+      mailList: [],
       search: "",
       isPlaying: [],
       currentAudio: "",
@@ -132,8 +116,9 @@ export default {
       url: "",
     };
   },
-  mounted() {
+  created() {
     this.fetchDataFromBackend();
+    this.getVoice();
     this.$nextTick(() => {
       const options = {
         zoomview: {
@@ -164,25 +149,51 @@ export default {
     async fetchDataFromBackend() {
       try {
         const requestData = {
-          username: "user1",
+          username: JSON.parse(localStorage.getItem("user")).username,
         };
 
         const response = await axios.post(
           "http://localhost:5000/user/sendAllVoice",
           requestData
         );
-        const responseData = response.data;
-        const tableData = responseData.voice;
-        const mailList = tableData.map((data) => ({
+        const mailList = response.data.map((data) => ({
           progress: 0,
-          recorder: data.recorder,
-          timestamp: data.timestamp,
-          musicUrl: require(data.url),
+          id: data.id,
+          title: data.title,
         }));
         this.mailList = mailList;
       } catch (error) {
         console.error("Data Acquisition Failure:", error);
       }
+    },
+
+    async getVoice() {
+      const updatedMailList = []; // 用于存储更新后的 mailList
+
+      for (const item of this.mailList) {
+        try {
+          const response = await axios.get("http://localhost:5000/getVoice", {
+            responseType: "blob",
+            params: {
+              id: item.id,
+            },
+          });
+          // 创建 URL 对象以获取 Blob 数据的临时链接
+          const audioUrl = window.URL.createObjectURL(
+            new Blob([response.data])
+          );
+
+          item.musicUrl = audioUrl;
+
+          updatedMailList.push(item); // 将更新后的元素添加到数组中
+        } catch (error) {
+          console.error("获取音频文件失败", error);
+          updatedMailList.push(item); // 如果请求失败，将原始元素添加到数组中
+        }
+      }
+
+      // 更新 mailList
+      this.mailList = updatedMailList;
     },
 
     handlePlay(index, rowData) {
@@ -226,7 +237,6 @@ export default {
 
         const audio = new Audio(rowData.musicUrl);
 
-        // audio.addEventListener("canplay", () => {
         audio.addEventListener("canplay", () => {
           this.$refs.audio.src = rowData.musicUrl;
           audio.play();
@@ -282,10 +292,15 @@ export default {
 
     toDetail() {
       if (this.justChanged == false) {
-        electronAPI.openDetailWindow("detail",this.$store.state.lang, this.timestamp);
+        electronAPI.openDetailWindow(
+          "detail",
+          this.$store.state.lang,
+          this.timestamp
+        );
         this.currentAudio.pause();
       }
     },
+
     zoomable() {
       let container = document.getElementById("zoomview-container");
       let zoomview = this.peaks.views.getView("zoomview");
@@ -298,9 +313,10 @@ export default {
         this.peaks.views.createZoomview(container);
       }
     },
-    async handleDelete(index) {
+
+    async handleDelete(index, rowData) {
       try {
-        await axios.post("http://localhost:5000/deleteVoiceByid", { index });
+        await axios.post("http://localhost:5000/deleteVoiceByid", { id: rowData.id });
 
         this.mailList.splice(index, 1);
 
@@ -310,13 +326,14 @@ export default {
       }
     },
   },
-  mounted(){
+
+  mounted() {
     electronAPI.receive("changeLang", (lang) => {
       this.$i18n.locale = lang; // 设置 i18n 的当前语言
       this.$store.dispatch("setLang", lang); // 触发 Vuex action 更新语言状态
       console.log(this.$store.state.lang);
-    })
-  }
+    });
+  },
 };
 </script>
 
