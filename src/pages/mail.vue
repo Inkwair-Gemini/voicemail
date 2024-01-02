@@ -21,11 +21,7 @@
           @row-click="toDetail"
         >
           <el-table-column :min-width="10"></el-table-column>
-          <el-table-column
-            :label="$t('mail.duration')"
-            prop="timestamp"
-            width="90"
-          >
+          <el-table-column :label="$t('mail.duration')" prop="title" width="90">
           </el-table-column>
           <el-table-column label="">
             <template slot-scope="scope">
@@ -72,7 +68,7 @@
                   type="danger"
                   icon="el-icon-delete"
                   size="mini"
-                  @click.stop="handleDelete(scope.$index)"
+                  @click.stop="handleDelete(scope.$index, scope.row)"
                 />
               </div>
             </template>
@@ -118,7 +114,7 @@ export default {
   },
   created() {
     this.fetchDataFromBackend();
-    this.getVoice();
+    // this.getVoice();
     this.$nextTick(() => {
       const options = {
         zoomview: {
@@ -149,14 +145,16 @@ export default {
     async fetchDataFromBackend() {
       try {
         const requestData = {
-          username: JSON.parse(localStorage.getItem("user")).username,
+          // username: JSON.parse(localStorage.getItem("user")).username,
+          username: "lzy",
         };
 
         const response = await axios.post(
           "http://localhost:5000/user/sendAllVoice",
           requestData
         );
-        const mailList = response.data.map((data) => ({
+        // console.log("response",response);
+        const mailList = response.data.voicemails.map((data) => ({
           progress: 0,
           id: data.id,
           title: data.title,
@@ -165,19 +163,21 @@ export default {
       } catch (error) {
         console.error("Data Acquisition Failure:", error);
       }
-    },
+      console.log("this.mailList", this.mailList);
 
-    async getVoice() {
       const updatedMailList = []; // 用于存储更新后的 mailList
 
       for (const item of this.mailList) {
         try {
-          const response = await axios.get("http://localhost:5000/getVoice", {
-            responseType: "blob",
-            params: {
-              id: item.id,
-            },
-          });
+          const response = await axios.get(
+            "http://localhost:5000/user/getVoice",
+            {
+              responseType: "blob",
+              params: {
+                id: item.id,
+              },
+            }
+          );
           // 创建 URL 对象以获取 Blob 数据的临时链接
           const audioUrl = window.URL.createObjectURL(
             new Blob([response.data])
@@ -191,10 +191,14 @@ export default {
           updatedMailList.push(item); // 如果请求失败，将原始元素添加到数组中
         }
       }
-
       // 更新 mailList
+      // console.log("updatedMailList", updatedMailList);
+
       this.mailList = updatedMailList;
+      // console.log("this.mailList", this.mailList);
+
     },
+
 
     handlePlay(index, rowData) {
       console.log(`正在播放第 ${index} 行的数据: `);
@@ -290,15 +294,16 @@ export default {
       }, 1);
     },
 
-    toDetail() {
+    toDetail(row) {
       if (this.justChanged == false) {
         electronAPI.openDetailWindow(
           "detail",
           this.$store.state.lang,
-          this.timestamp
+          row.id
         );
         this.currentAudio.pause();
       }
+      console.log(row.id);
     },
 
     zoomable() {
@@ -316,7 +321,10 @@ export default {
 
     async handleDelete(index, rowData) {
       try {
-        await axios.post("http://localhost:5000/deleteVoiceByid", { id: rowData.id });
+        console.log(rowData.id);
+        await axios.post("http://localhost:5000/user/deleteVoiceByid", {
+          id: rowData.id,
+        });
 
         this.mailList.splice(index, 1);
 

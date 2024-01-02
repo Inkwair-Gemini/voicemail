@@ -3,7 +3,7 @@
     <div class="main">
       <div class="header">
         <div class="header2">
-          <label class="headerlabel">{{$t('detail.title')}}</label>
+          <label class="headerlabel">{{ $t("detail.title") }}</label>
         </div>
         <div class="title">
           <label class="headerlabel">{{ title }}</label>
@@ -24,13 +24,25 @@
       </template>
       <template>
         <div class="custom-button-wrapper">
-          <el-button class="play custom-large-button primary-button-style" type="primary" @click="fastBackward()">
+          <el-button
+            class="play custom-large-button primary-button-style"
+            type="primary"
+            @click="fastBackward()"
+          >
             <a-icon type="backward" />
           </el-button>
-          <el-button class="play custom-large-button primary-button-style" type="primary" @click="handlePlay()">
+          <el-button
+            class="play custom-large-button primary-button-style"
+            type="primary"
+            @click="handlePlay()"
+          >
             <a-icon :type="isPlaying ? 'pause' : 'caret-right'" />
           </el-button>
-          <el-button class="play custom-large-button primary-button-style" type="primary" @click="fastForward()">
+          <el-button
+            class="play custom-large-button primary-button-style"
+            type="primary"
+            @click="fastForward()"
+          >
             <a-icon type="forward" />
           </el-button>
         </div>
@@ -51,10 +63,10 @@ export default {
   name: "Detail",
   data() {
     return {
-      title: "浙江工业大学校歌",
-      text: " 烛光烛光，在西子湖畔点燃；心血浇灌，现代化的希望；莘莘学子，巍巍栋梁；扎根在科学沃土，茁壮成长；激荡激荡，着古运河的情怀；沐浴改革，开放之光；工程师的摇篮，新技术的殿堂；紧连着钱江长江，太平洋；任重道远，创建一流；浙江工业大学；开拓奋进，迎接新世纪的挑战；新世纪的挑战；啊啊啊……奔向明天的辉煌；啊啊啊……奔向明天的辉煌！",
+      title: "",
+      text: "",
       progress: 0,
-      displayedText:'',
+      displayedText: "",
       music: "",
       //   musicUrl: require(this.music + ".mp3"),
       musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
@@ -63,30 +75,47 @@ export default {
       currentIndex: 0,
       isPlaying: false,
       timestamp: null,
+      id: 1,
     };
   },
-  mounted() {
+  created() {
     this.fetchDataFromBackend();
     this.startTyping();
-    electronAPI.receive("open-detail-window", (event, route, timestamp) => {
+    electronAPI.receive("open-detail-window", (event, route, id) => {
       console.log("Received Route:", route);
-      console.log("Received Extra Value:", timestamp);
-      this.timestamp = timestamp;
+      this.id = id;
     });
   },
 
   methods: {
     async fetchDataFromBackend() {
       try {
-        const response = await axios.get("localhost:5000/getInfo/${timestamp}");
-        const responseData = response.data;
+        const requestData = {
+          id: this.id,
+        };
 
-        this.timestamp = responseData.timestamp;
-        this.text = responseData.text;
-        this.url = require(responseData.url);
+        const response = await axios.post(
+          "http://localhost:5000/user/getDetail",
+          requestData
+        );
+        this.text = response.data.voicemails[0].text;
+        this.title = response.data.voicemails[0].title;
+        console.log("text:", this.text);
+        console.log("title:", this.title);
       } catch (error) {
         console.error("Data Acquisition Failure:", error);
       }
+
+      const response = await axios.get("http://localhost:5000/user/getVoice", {
+        responseType: "blob",
+        params: {
+          id: this.id,
+        },
+      });
+      // 创建 URL 对象以获取 Blob 数据的临时链接
+      const audioUrl = window.URL.createObjectURL(new Blob([response.data]));
+
+      this.musicUrl = audioUrl;
     },
     startTyping() {
       this.displayedText = "";
@@ -158,13 +187,13 @@ export default {
       }
     },
   },
-  mounted(){
+  mounted() {
     electronAPI.receive("changeLang", (lang) => {
       this.$i18n.locale = lang; // 设置 i18n 的当前语言
       this.$store.dispatch("setLang", lang); // 触发 Vuex action 更新语言状态
       console.log(this.$store.state.lang);
-    })
-  }
+    });
+  },
 };
 </script>
 

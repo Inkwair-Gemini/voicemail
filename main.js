@@ -1,5 +1,5 @@
 //eletron 主进程
-const { app, BrowserWindow, Tray, ipcMain, screen ,dialog } = require('electron')
+const { app, BrowserWindow, Tray, ipcMain, screen, dialog } = require('electron')
 const path = require('path')
 
 let mainWindow = null;
@@ -65,116 +65,116 @@ ipcMain.on('open-tray', () => {
   setTray();
 });
 
-function openNewWindow(route, Width, Height,lang) {
-    windowInstance = new BrowserWindow({
-      icon:'./public/Mail II.png',
-      width: Width,
-      height: Height,
-      autoHideMenuBar:true,
-      resizable: false, // 禁止窗口缩放
-      maximizable: false, // 禁止最大化
-      webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: true,
-        preload: path.join(__dirname, 'preload.js'),
-      }
-    });
+function openNewWindow(route, Width, Height, lang) {
+  windowInstance = new BrowserWindow({
+    icon: './public/Mail II.png',
+    width: Width,
+    height: Height,
+    autoHideMenuBar: true,
+    resizable: false, // 禁止窗口缩放
+    maximizable: false, // 禁止最大化
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
+    }
+  });
 
-    // 加载指定路由内容
-    windowInstance.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
+  // 加载指定路由内容
+  windowInstance.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
 
-    // 等待窗口加载完毕
-    windowInstance.once('ready-to-show', () => {
-      // 当窗口加载完毕后，发送消息
-      windowInstance.webContents.send("changeLang", lang); // 更换语言
-      windowInstance.show(); // 窗口加载完毕后显示窗口
-    });
+  // 等待窗口加载完毕
+  windowInstance.once('ready-to-show', () => {
+    // 当窗口加载完毕后，发送消息
+    windowInstance.webContents.send("changeLang", lang); // 更换语言
+    windowInstance.show(); // 窗口加载完毕后显示窗口
+  });
 
-    let needsFocusFix = false;
-    let triggeringProgrammaticBlur = false;
+  let needsFocusFix = false;
+  let triggeringProgrammaticBlur = false;
 
-    windowInstance.on('blur', (event) => {
-      if(!triggeringProgrammaticBlur) {
-        needsFocusFix = true;
-      }
-    })
+  windowInstance.on('blur', (event) => {
+    if (!triggeringProgrammaticBlur) {
+      needsFocusFix = true;
+    }
+  })
 
-    windowInstance.on('focus', (event) => {
-      if(needsFocusFix) {
-        needsFocusFix = false;
-        triggeringProgrammaticBlur = true;
+  windowInstance.on('focus', (event) => {
+    if (needsFocusFix) {
+      needsFocusFix = false;
+      triggeringProgrammaticBlur = true;
+      setTimeout(function () {
+        windowInstance.blur();
+        windowInstance.focus();
         setTimeout(function () {
-          windowInstance.blur();
-          windowInstance.focus();
-          setTimeout(function () {
-            triggeringProgrammaticBlur = false;
-          }, 100);
+          triggeringProgrammaticBlur = false;
         }, 100);
-      }
-    })
+      }, 100);
+    }
+  })
 
-    windowInstance.on('closed', () => {
-      windowInstance = null;
-    });
+  windowInstance.on('closed', () => {
+    windowInstance = null;
+  });
 
-    return windowInstance
+  return windowInstance
 }
-ipcMain.on('open-delete-window', (event, route,lang) => {
+ipcMain.on('open-delete-window', (event, route, lang) => {
   mainWindow.hide();
-  if(deleteWindow === null || deleteWindow.isDestroyed()){
-    deleteWindow = openNewWindow(route, 506, 726,lang)
+  if (deleteWindow === null || deleteWindow.isDestroyed()) {
+    deleteWindow = openNewWindow(route, 506, 726, lang)
   }
-  else{
+  else {
     deleteWindow.focus()
   }
 });
 
-ipcMain.on('open-mail-window', (event, route,lang) => {
+ipcMain.on('open-mail-window', (event, route, lang) => {
   mainWindow.hide();
-  if(mailWindow === null || mailWindow.isDestroyed()){
-    mailWindow = openNewWindow(route, 506, 726,lang)
+  if (mailWindow === null || mailWindow.isDestroyed()) {
+    mailWindow = openNewWindow(route, 506, 726, lang)
   }
-  else{
+  else {
     mailWindow.show()
     mailWindow.focus()
   }
 });
 
-ipcMain.on('open-login-window', (event, route,lang) => {
-  if(loginWindow === null || loginWindow.isDestroyed()){
-    loginWindow = openNewWindow( route, 406, 326,lang)
+ipcMain.on('open-login-window', (event, route, lang) => {
+  if (loginWindow === null || loginWindow.isDestroyed()) {
+    loginWindow = openNewWindow(route, 406, 326, lang)
   }
-  else{
+  else {
     loginWindow.show()
     loginWindow.focus()
   }
 });
 
-ipcMain.on('open-register-window', (event, route,lang) => {
+ipcMain.on('open-register-window', (event, route, lang) => {
   loginWindow.hide() //先隐藏否则注册子窗口不会有ready-to-show方法
-  if(registerWindow === null || registerWindow.isDestroyed()){
-    registerWindow = openNewWindow( route, 406,326,lang)
+  if (registerWindow === null || registerWindow.isDestroyed()) {
+    registerWindow = openNewWindow(route, 406, 326, lang)
   }
-  else{
+  else {
     registerWindow.focus()
   }
 });
 
-ipcMain.on('open-detail-window', (event, route,lang,timestamp) => {
+ipcMain.on('open-detail-window', (event, route, lang, id) => {
   mailWindow.hide()
-  if(detailWindow === null || detailWindow.isDestroyed()){
-    detailWindow = openNewWindow(route, 506, 726,lang,timestamp)
+  if (detailWindow === null || detailWindow.isDestroyed()) {
+    detailWindow = openNewWindow(route, 506, 726, lang, id)
   }
-  else{
+  else {
     detailWindow.focus()
   }
 });
 
-ipcMain.on('open-upload-window', (event, route,lang) => {
-  if(uploadWindow === null || uploadWindow.isDestroyed()){
-    uploadWindow = openNewWindow(route, 400, 200,lang)
+ipcMain.on('open-upload-window', (event, route, lang) => {
+  if (uploadWindow === null || uploadWindow.isDestroyed()) {
+    uploadWindow = openNewWindow(route, 400, 200, lang)
   }
-  else{
+  else {
     uploadWindow.focus()
   }
 });
@@ -184,23 +184,23 @@ ipcMain.on('open-record-window', (event, route) => {
     recordWindow = new BrowserWindow({
       width: 56,
       height: 44,
-      autoHideMenuBar:true,
+      autoHideMenuBar: true,
       resizable: false, // 禁止窗口缩放
       maximizable: false, // 禁止最大化
       skipTaskbar: true, // 将窗口隐藏在任务栏中
       draggable: true,
       frame: false,
       alwaysOnTop: true,
-      x:1350,
-      y:650,
+      x: 1350,
+      y: 650,
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,
         preload: path.join(__dirname, 'preload.js'),
       }
     });
-      // 加载指定路由内容
-      recordWindow.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
+    // 加载指定路由内容
+    recordWindow.loadURL(decodeURIComponent("http://localhost:8080/#/" + route))
 
     // 在窗口关闭时重置窗口变量
     recordWindow.on('closed', () => {
@@ -209,14 +209,14 @@ ipcMain.on('open-record-window', (event, route) => {
   }
 });
 
-ipcMain.on('login', (event,info) => {
-  mainWindow.webContents.send("getLoginInfo",info)
+ipcMain.on('login', (event, info) => {
+  mainWindow.webContents.send("getLoginInfo", info)
 });
-ipcMain.on('avatar', (event,info) => {
-  mainWindow.webContents.send("getAvatarInfo",info)
+ipcMain.on('avatar', (event, info) => {
+  mainWindow.webContents.send("getAvatarInfo", info)
 });
-ipcMain.on('deleteNumber', (event,info) => {
-  mainWindow.webContents.send("getDeleteNumber",info)
+ipcMain.on('deleteNumber', (event, info) => {
+  mainWindow.webContents.send("getDeleteNumber", info)
 });
 ipcMain.on("closeRecord", (event) => {
   if (recordWindow) {
@@ -224,21 +224,28 @@ ipcMain.on("closeRecord", (event) => {
     recordWindow = null; // 如果recordWindow存在，则关闭它
   }
 });
-ipcMain.on("changeLang", (event,lang) => {
-  if(deleteWindow !== null && !deleteWindow.isDestroyed()){
-    deleteWindow.webContents.send("changeLang",lang)}
-  if(mailWindow !== null && !mailWindow.isDestroyed()){
-    mailWindow.webContents.send("changeLang",lang)}
-  if(loginWindow !== null && !loginWindow.isDestroyed()){
-    loginWindow.webContents.send("changeLang",lang)}
-  if(detailWindow !== null && !detailWindow.isDestroyed()){
-    detailWindow.webContents.send("changeLang",lang)}
-  if(uploadWindow !== null && !uploadWindow.isDestroyed()){
-    uploadWindow.webContents.send("changeLang",lang)}
-  if(recordWindow !== null && !recordWindow.isDestroyed()){
-    recordWindow.webContents.send("changeLang",lang)}
-  if(registerWindow !== null && !registerWindow.isDestroyed()){
-    registerWindow.webContents.send("changeLang",lang)}
+ipcMain.on("changeLang", (event, lang) => {
+  if (deleteWindow !== null && !deleteWindow.isDestroyed()) {
+    deleteWindow.webContents.send("changeLang", lang)
+  }
+  if (mailWindow !== null && !mailWindow.isDestroyed()) {
+    mailWindow.webContents.send("changeLang", lang)
+  }
+  if (loginWindow !== null && !loginWindow.isDestroyed()) {
+    loginWindow.webContents.send("changeLang", lang)
+  }
+  if (detailWindow !== null && !detailWindow.isDestroyed()) {
+    detailWindow.webContents.send("changeLang", lang)
+  }
+  if (uploadWindow !== null && !uploadWindow.isDestroyed()) {
+    uploadWindow.webContents.send("changeLang", lang)
+  }
+  if (recordWindow !== null && !recordWindow.isDestroyed()) {
+    recordWindow.webContents.send("changeLang", lang)
+  }
+  if (registerWindow !== null && !registerWindow.isDestroyed()) {
+    registerWindow.webContents.send("changeLang", lang)
+  }
 });
 
 app.on('ready', createWindow)

@@ -47,7 +47,8 @@ export default {
 
             this.mediaRecorder.onstart = () => {
               // 记录录制的开始时间
-              this.recordingStartTime = new Date();
+              const today = new Date();
+              this.recordingStartTime = new Date(today.getFullYear(), today.getMonth(), today.getDate());
             };
 
             this.mediaRecorder.onstop = () => {
@@ -63,7 +64,6 @@ export default {
               // 将录制者名称和录制时间作为JSON数据添加到请求体
               const recordingData = {
                 recorderName: this.recorderName,
-                recordingStartTime: this.recordingStartTime,
                 recordingEndTime: this.recordingEndTime,
               };
 

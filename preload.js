@@ -5,7 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     openLoginWindow: (router,lang) => ipcRenderer.send('open-login-window', router,lang),
     openDeleteWindow: (router,lang) => ipcRenderer.send('open-delete-window', router,lang),
     openRegisterWindow: (router,lang) => ipcRenderer.send('open-register-window', router,lang),
-    openDetailWindow: (router, timestamp) => ipcRenderer.send('open-detail-window', router,lang, timestamp),
+    openDetailWindow: (router, lang, id) => ipcRenderer.send('open-detail-window', router,lang, id),
     openUploadWindow: (router,lang) => ipcRenderer.send('open-upload-window', router,lang),
     openRecordWindow: (router) => ipcRenderer.send('open-record-window', router),
     receive: (channel, callback) => {
