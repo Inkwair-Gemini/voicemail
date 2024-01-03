@@ -113,6 +113,9 @@ export default {
     };
   },
   created() {
+    for (let i = 0; i < this.isPlaying.length; i++) {
+      this.$set(this.isPlaying, i, false);
+    }
     this.fetchDataFromBackend();
     // this.getVoice();
     this.$nextTick(() => {
@@ -196,9 +199,7 @@ export default {
 
       this.mailList = updatedMailList;
       // console.log("this.mailList", this.mailList);
-
     },
-
 
     handlePlay(index, rowData) {
       console.log(`正在播放第 ${index} 行的数据: `);
@@ -217,6 +218,7 @@ export default {
         let progress =
           (this.currentAudio.currentTime / this.currentAudio.duration) * 100;
         if (progress == 100) {
+          this.$set(this.isPlaying, index, false);
           this.currentAudio.currentTime = 0;
         }
       }
@@ -250,6 +252,7 @@ export default {
             // 计算进度百分比
             let progress = (audio.currentTime / audio.duration) * 100;
             if (progress == 100) {
+              this.$set(this.isPlaying, index, false);
               progress = 0;
             }
             this.$set(rowData, "progress", progress);
@@ -271,6 +274,7 @@ export default {
             // 计算进度百分比
             let progress = (audio.currentTime / audio.duration) * 100;
             if (progress == 100) {
+              this.$set(this.isPlaying, index, false);
               progress = 0;
             }
             this.$set(rowData, "progress", progress);
@@ -295,12 +299,11 @@ export default {
     },
 
     toDetail(row) {
+      for (let i = 0; i < this.isPlaying.length; i++) {
+        this.$set(this.isPlaying, i, false);
+      }
       if (this.justChanged == false) {
-        electronAPI.openDetailWindow(
-          "detail",
-          this.$store.state.lang,
-          row.id
-        );
+        electronAPI.openDetailWindow("detail", this.$store.state.lang, row.id);
         this.currentAudio.pause();
       }
       console.log(row.id);

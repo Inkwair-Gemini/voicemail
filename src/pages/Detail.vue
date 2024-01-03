@@ -80,6 +80,7 @@ export default {
   created() {
     this.fetchDataFromBackend();
     this.startTyping();
+    this.isPlaying = false;
     electronAPI.receive("open-detail-window", (event, route, id) => {
       console.log("Received Route:", route);
       this.id = id;
@@ -116,17 +117,6 @@ export default {
 
       this.musicUrl = audioUrl;
     },
-    startTyping() {
-      this.displayedText = "";
-      this.intervalId = setInterval(() => {
-        if (this.currentIndex < this.text.length) {
-          this.displayedText += this.text[this.currentIndex];
-          this.currentIndex++;
-        } else {
-          clearInterval(this.intervalId); // 停止计时器
-        }
-      }, 100); // 每100毫秒显示一个字符，可以根据需要调整速度
-    },
     handlePlay() {
       this.isPlaying = !this.isPlaying;
       if (this.currentAudio) {
@@ -143,6 +133,7 @@ export default {
           (this.currentAudio.currentTime / this.currentAudio.duration) * 100;
         console.log(progress);
         if (progress == 100) {
+          this.isPlaying = false;
           this.currentAudio.currentTime = 0;
         }
       } else {
@@ -160,6 +151,7 @@ export default {
             console.log(progress);
             // 更新数据对象中的进度
             if (progress == 100) {
+              this.isPlaying = false;
               progress = 0;
             }
             this.progress = progress;
