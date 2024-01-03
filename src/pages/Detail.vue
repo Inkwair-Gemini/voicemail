@@ -50,7 +50,7 @@
       </template>
       <template>
         <div class="text">
-          {{ displayedText }}
+          {{ this.text }}
         </div>
       </template>
     </div>
@@ -68,8 +68,7 @@ export default {
       progress: 0,
       displayedText: "",
       music: "",
-      //   musicUrl: require(this.music + ".mp3"),
-      musicUrl: require("@/assets/music/School_Song_of_ZJUT.mp3"),
+      musicUrl: "",
       currentAudio: null,
       currentAudioPosition: 0,
       currentIndex: 0,
